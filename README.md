@@ -93,7 +93,15 @@ Keep notes, requirements, meeting notes, API references, and UI/UX decisions nex
 
 ### Activity history
 
-Important changes (creating, editing, moving, archiving, deleting) are recorded locally and shown on the Dashboard, the workspace page, and the project page.
+Important changes (creating, editing, moving, archiving, deleting) are recorded locally. The Dashboard, the workspace page, and the project page show the newest 8, with a link to the full list.
+
+### Search and filters
+
+One search box in the top bar (`Ctrl+K`) finds workspaces, projects, tasks, and the text of documents. On a project page you can filter the task list by status, priority, and label.
+
+### Deadline reminders
+
+Optional: once a day Avenqor shows a Windows notification for your tasks that are due today or overdue. Reminders appear only while the app is open, and Windows shows notifications for installed apps.
 
 ### Backup and restore
 
@@ -105,7 +113,7 @@ Export all your data to one readable JSON file, and restore it later. A restore 
 
 ### Interface
 
-Clean light theme, DM Sans font, indigo accent, a collapsible sidebar, and a custom title bar that shows where you are (for example *Workspace / Project / Board*). The window works down to 960x600.
+Clean light theme, DM Sans font, indigo accent (one accent color for every progress bar), a collapsible sidebar, and a custom title bar that shows where you are (for example *Workspace / Project / Board*). The window works down to 960x600.
 
 ## Your data stays with you
 
@@ -223,14 +231,14 @@ There is no automated test suite yet. Features are tested by hand and the result
 | 1 | Interface foundation | Done |
 | 2 | SQLite, workspaces, projects, tasks | Done |
 | 3 | Board, calendar, task details, documents, activity | Done |
-| 4 | Backup and restore, search and filters, validation review, local notifications | In progress (backup and restore done) |
+| 4 | Backup and restore, search and filters, validation review, local notifications | In progress (all four parts done; closing check next) |
 | 5 | GitHub integration | Future |
 | 6 | Online accounts, sync, shared workspaces | Future |
 | 7 | Web, Android, iOS, and AI assistance | Future |
 
 **Version 1.0** means Phase 4 plus release preparation: a tested installer, a decision on where the database folder lives, a trademark check of the name, and a custom installer look. After 1.0, the plan is to choose between a mobile version and a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases and are **not** part of 1.0.
 
-Known limitations today: no subtasks, no reminders or notifications yet, no templates, and single-user only. The database folder is in Roaming (see Known issues in the status file).
+Known limitations today: no subtasks, no templates, reminders only while the app is open, and single-user only. The database folder is in Roaming (see Known issues in the status file).
 
 ## Documentation
 

@@ -68,9 +68,9 @@ The roadmap in `CLAUDE.md` places the MVP features in these phases.
 | H | **Progress and activity**: completion statistics computed from stored data, local activity history | Phase 3 | Implemented: progress is calculated from real task data (verified 2026-10-26); local activity history (step 3g, migration 6) verified 2026-10-29, shown as Activity on the Dashboard, project page, and workspace page |
 | I | **Templates**: reusable project or task templates, where practical | Not scheduled in the roadmap | Agreed, not started |
 | J | **Backup and restore**: JSON export and validated import, format version, no silent overwrite | Phase 4 | Implemented (step 4a, verified by the developer 2026-10-30): export of all data to a JSON file, validated restore that replaces all data after a mandatory safety backup. Merge mode and automatic or encrypted backups are not planned for 1.0 |
-| K | **Local notifications**: deadline reminders once the core is stable | Phase 4 ("where appropriate") | Written 2026-10-31 (step 4d, awaiting the developer's test): one daily reminder for your tasks that are due today or overdue, only while the app is open; settings kept in the web view's storage |
+| K | **Local notifications**: deadline reminders once the core is stable | Phase 4 ("where appropriate") | Implemented (step 4d, verified by the developer 2026-11-01): one daily reminder for your tasks that are due today or overdue, only while the app is open; settings kept in the web view's storage |
 
-Search and filters (search box in the top bar verified 2026-10-31; task filters on the project page awaiting test), error handling and validation, and testing are also listed for Phase 4.
+Search and filters (search box in the top bar and task filters on the project page verified 2026-10-31), error handling and validation, and testing are also listed for Phase 4.
 
 ### Rules that shape the MVP
 
