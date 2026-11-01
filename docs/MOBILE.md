@@ -15,10 +15,9 @@ This document is the separate record for the mobile version of Avenqor: decision
 | Repository | **One repository** for desktop and mobile. A separate repository was considered and not chosen. |
 | First platform | **Android.** iOS later: it needs a Mac and a paid Apple developer account, so it is not part of the first mobile release. |
 | Test device | The developer's own Android phone, connected by a USB cable. |
+| Repository name | **Avenqor** (Agreed 2026-11-01), replacing `project-manager`, because "desktop" would be wrong now that the repository holds the mobile app too. GitHub redirects the old links. `CLAUDE.md` section 2 was changed to match. The rename itself is done in the GitHub settings by the developer. |
 
 Why one repository (Claude's reasoning, approved with the decision): the services, repositories, validation, backup format, and database migrations are shared, so a second repository would copy them and the two copies could drift apart.
-
-**Proposed, not yet approved:** rename the GitHub repository from `project-manager` to `avenqor` (the name "desktop" would be wrong now that the repository holds the mobile app too). Renaming keeps the old links working, because GitHub redirects them. `CLAUDE.md` section 2 would need a matching change, which needs the developer's approval.
 
 ## What stays the same
 
@@ -91,7 +90,6 @@ The desktop release stays the source of truth: every change for mobile must keep
 
 ## Open questions
 
-- Repository name: `avenqor` is proposed, not approved.
 - Version numbering for mobile: the same number as desktop (for example 1.1.0 for both), or separate numbers. Not decided.
 - How the phone and the PC exchange data before synchronization exists: backup files only (the current idea), with a clear explanation in the app.
 - Whether the phone gets every feature of the desktop version in the first mobile release, or a smaller set. Not decided; to settle after the spike.
