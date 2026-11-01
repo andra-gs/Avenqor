@@ -189,6 +189,7 @@ No automated tests exist and no test framework is installed. Commands actually r
 | run by Claude 2026-10-31 | Node (`--experimental-strip-types`) on scratch copies of `isReminderDue`, `buildReminderMessage`, and `isValidReminderTime`; partial `tsc --noEmit` | The message counts due-today and overdue tasks that are not done (2 due today and 3 overdue for the sample, titles of today's tasks first, "and 2 more"); no message when nothing is due or the list is empty; the reminder is due only when enabled, at or after the chosen time, and not yet handled today; times such as `24:00`, `9:00`, `12:60`, and empty are invalid. `tsc`: no errors except the known noise. The Rust side (plugin, permission `notification:default`) could not be compiled in the Claude workspace, so the notification itself is untested |
 | reported 2026-11-01 | `npm run tauri dev` (step 4d reminders), checks 1 to 6 | Passed, all as expected: the Reminders section in Settings; the test notification appeared ("Avenqor: reminders work"); the daily reminder with the right counts and titles; shown once per day; off switch; time box handling. The permission `notification:default` compiled and worked |
 | reported 2026-11-01 | `npm run build` (step 4d) | Passed: `tsc` and Vite build (187 modules) without errors |
+| reported 2026-11-01 | Phase 4 closing check with the release program `project-manager.exe` (`npm run tauri build`), checks 1 to 6 | Passed, all as expected: Database line `Connected · schema version 6 · 11 tables`; one round through every area; search; backup and restore, with the new wrong-version message; the notification shows the name Avenqor; data kept after closing and reopening. Check 7 (fresh database) skipped |
 | run by Claude 2026-10-31 | Python `sqlite3` in memory against migrations 1 to 6 with the four search queries of `searchRepository.ts`; Node (`--experimental-strip-types`) on the pure functions of `searchService.ts` (`cleanSearchText`, `toLikePattern`, `makeSnippet`); partial `tsc --noEmit` | SQL: a match in a name, description, title, or text is found regardless of letter case; `50%` and `_menu` match only those characters after escaping; no match gives empty lists. Functions: text under 2 characters gives no search, spaces are collapsed, `%` and `_` are escaped, the snippet is cut with an ellipsis and is empty when the text is not in the body. `tsc`: no errors except the known noise. The app was not built or run in the Claude workspace, so the screens (search box, activity page, label menu, bar colors) are untested |
 | run by Claude 2026-10-29 | Python `sqlite3` in memory against migrations 1 to 5 and the SQL of `documentRepository.ts`; partial `tsc --noEmit` | SQL: empty title, unknown type, and missing project rejected; list newest first without body; only active projects offered; update and delete report missing rows; deleting a project deletes its documents. `tsc`: no errors except missing-package noise and the known `database.ts(17,3)`. The app was not built or run in the Claude workspace, so the document screens are untested until the developer's run |
 | reported 2026-10-24 | `npm run build` (step 6, after the fix) | Passed: `tsc` and Vite build (74 modules) without errors |
@@ -247,7 +248,7 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
   - [x] 3f Project documents, migration 5 (verified 2026-10-29; two small adjustments below were made after the test)
   - [x] 3g Local activity history, migration 6 (verified 2026-10-29)
   - [x] Closing check with the release program (reported 2026-10-29; the optional fresh-database check was skipped)
-- [ ] **Phase 4:** backup and restore, search, validation, notifications, testing (all four parts verified in development mode; closing check with the release program next)
+- [x] **Phase 4:** backup and restore, search, validation, notifications, testing (complete 2026-11-01; on branch `phase-3-kanban`, not yet merged into `main`)
   - [x] 4a Backup and restore (verified 2026-10-30; the wording of the wrong-version messages was changed afterwards, 2026-10-31, and not yet re-tested)
   - [x] 4b Search and filters (verified 2026-10-31: search box and the task filters)
   - [x] 4c Validation review (verified 2026-10-31)
@@ -258,22 +259,19 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
 
 **0. Developer, done:** the Windows icon of `project-manager.exe` and the taskbar (reported 2026-10-31), drag and drop in the release program (reported 2026-10-31), and the new screenshots in `docs/screenshots/` (pushed 2026-10-31).
 
-**1. Developer: Phase 4 closing check with the release program.** Steps 4a to 4d are verified in development mode. The same round is done once in the release program (no new code):
+**1. Developer: test the installer look and the installer itself (written 2026-11-01).** The NSIS installer (`-setup.exe`) now has the Avenqor pictures: `src-tauri/installer/header.bmp` (150x57, the wordmark on white) and `sidebar.bmp` (164x314, the A and the wordmark on the accent color), the Avenqor icon for installer and uninstaller, and `installMode: currentUser` (installs for the current Windows user, no administrator window).
 
 ```powershell
 git pull origin phase-3-kanban
-npm install
 npm run tauri build
 ```
 
-Then start `src-tauri\target\release\project-manager.exe` (if the window behaves like an old version, run `cargo clean` in `src-tauri` first and build again) and check:
+The installer is in `src-tauri\target\release\bundle\nsis\`. If the first build fails with an NSIS or image error, copy the text to Claude. Check:
 
-1. Settings, Database line: `schema version 6`, 11 tables, and your data is there.
-2. One round through every area: workspace, project, task, board (drag and drop), checklist (pencil icon), note (menu), label (menu), document, Activity ("View all activity" when there are more than 8 entries), task filters.
-3. Search box (`Ctrl+K`): a task, a project, a word inside a document.
-4. Backup: export, change something, restore, check that the data matches; then bad file (`"formatVersion": 2`) shows the new message.
-5. Reminders: the test notification appears. (The program name shown may still be PowerShell or Avenqor; tell Claude which, and whether Windows asked for permission.)
-6. Close and reopen: everything is kept.
-7. Optional: rename `avenqor.db` to check the fresh-database start, then restore the backup (the folder is `%APPDATA%\io.github.andra-gs.avenqor`).
+1. Run the setup file (do not delete your development data first). The first page shows the sidebar picture and the later pages the header picture. Tell Claude if a picture is cut off, blurry, or looks wrong. Windows may show a SmartScreen warning because the file is not signed; that is expected until a code-signing certificate exists.
+2. Install: Avenqor appears in the Start menu with the right icon, and starts. A desktop shortcut is only there if the installer offers it.
+3. The installed program shows the same data as before (same database folder), the notification name is Avenqor, and drag and drop works.
+4. Settings > Apps (Windows): Avenqor is listed with its icon. Uninstall it from there: the uninstaller shows the pictures and an option about deleting the application data. FIRST copy your backup somewhere safe (Settings, Export backup). Test once with the option unticked (the data folder `%APPDATA%\io.github.andra-gs.avenqor` stays) and reinstall: the data is still there.
+5. Optional: tick the option and check that the folder is deleted.
 
-**2. After the closing check:** release preparation (tested installer, database folder decision, trademark check, installer and uninstaller look). Plans for documents as files and the Whiteboard are in [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) (Future). Merging `phase-3-kanban` into `main` is the developer's to do, when ready.
+**2. After the installer test:** the rest of release preparation (database folder decision, trademark check, code signing if wanted, version number, merging into `main`). Plans for documents as files and the Whiteboard are in [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) (Future). Merging `phase-3-kanban` into `main` is the developer's to do, when ready.
