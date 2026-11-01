@@ -246,7 +246,7 @@ There is no automated test suite yet. Features are tested by hand and the result
 | 6 | Online accounts, sync, shared workspaces | Future |
 | 7 | Web, Android, iOS, and AI assistance | Future |
 
-**Version 1.0** is Phase 4 plus release preparation, and it is done. The next step is the developer's choice between a mobile version and a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases.
+**Version 1.0** is Phase 4 plus release preparation, and it is done. Next comes the **Android version** (same code base, planned in [docs/MOBILE.md](docs/MOBILE.md)); after that, a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases.
 
 Known limitations today: no subtasks, no templates, reminders only while the app is open, and single-user only. The database folder is in Roaming (see Known issues in the status file).
 
@@ -259,6 +259,7 @@ Known limitations today: no subtasks, no templates, reminders only while the app
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the application is structured, and why |
 | [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md) | SQLite tables and migrations |
 | [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) | What is done, tested, broken, and next |
+| [docs/MOBILE.md](docs/MOBILE.md) | The Android version: decisions, setup, plan |
 | [docs/BRAND.md](docs/BRAND.md) | Brand identity notes (in Indonesian) |
 
 ## About
