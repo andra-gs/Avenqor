@@ -254,13 +254,13 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
   - [x] 4b Search and filters (verified 2026-10-31: search box and the task filters)
   - [x] 4c Validation review (verified 2026-10-31)
   - [x] 4d Local notifications (verified 2026-11-01 in development mode; the notification with the Avenqor name needs an installed build, see release preparation)
-- [ ] **Release 1.0.0:** version number, installer look, and the NSIS installer verified by the developer (2026-11-01); merge into `main` and the GitHub release are the developer's next step
+- [x] **Release 1.0.0:** version number, installer look, and the NSIS installer verified by the developer (2026-11-01); `release-1.0` merged into `main` (PR #3) and the GitHub release `1.0.0` published 2026-11-01 (checked by Claude through the GitHub API the same day)
 - [ ] Phases 5 to 7: GitHub integration, online architecture, platform expansion and AI (Future)
 
 ## Next task (exact)
 
 **0. Developer, done:** the Windows icon of `project-manager.exe` and the taskbar (reported 2026-10-31), drag and drop in the release program (reported 2026-10-31), and the new screenshots in `docs/screenshots/` (pushed 2026-10-31).
 
-**1. Developer: publish version 1.0.0.** Steps are in the reply of 2026-11-01 and summarized here: (1) merge `release-1.0` into `main` (pull request), (2) on GitHub create the release `v1.0.0` from `main` and attach `Avenqor_1.0.0_x64-setup.exe` from `src-tauri\target\release\bundle\nsis\` (built from `release-1.0`; the code is the same as `main` after the merge), (3) paste the release notes, with the SHA-256 checksum from `Get-FileHash`, (4) open the "Download" link in the README and check that it reaches the release.
+**1. Done: version 1.0.0 is released (2026-11-01).** Checked through the GitHub API: the release `Avenqor 1.0.0` (tag `1.0.0`, not `v1.0.0`) is published, not a draft, not a pre-release, and is the latest release; its target is `main`, and the tag points to commit `f1cd839`, which has version 1.0.0 in `package.json` and the Download section in the README. The one asset `Avenqor_1.0.0_x64-setup.exe` (2,689,733 bytes) is uploaded, its SHA-256 matches the checksum in the release notes, and the file name matches the README. Not checked: that the downloaded file installs (the same file was tested before upload only if it is the one built from `release-1.0`), and what SmartScreen shows for a downloaded file.
 
 **2. After 1.0.0:** the developer decides between the mobile version and the Documents and Whiteboard update (Future, see [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)); GitHub integration (Phase 5) and online features (Phase 6) come later. Code signing was declined for now (2026-11-01). Decided for 1.0: the database folder stays Roaming, version 1.0.0, and the developer reports that no registration of the name Avenqor was found in Indonesia or internationally (stated by the developer, not checked by Claude).
