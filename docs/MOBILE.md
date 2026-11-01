@@ -102,4 +102,17 @@ The desktop release stays the source of truth: every change for mobile must keep
 
 ## Test results
 
-None yet. Each test is recorded here with the date and the command used.
+Each test is recorded with the date and the command used. All results below were reported by the developer.
+
+**M0, Android tools (2026-11-01, Windows PowerShell): passed.**
+
+| Check | Command | Result |
+|---|---|---|
+| Phone seen by adb | `& "$env:LocalAppData\Android\Sdk\platform-tools\adb.exe" devices` | First `unauthorized`, then `device` after the developer accepted "Allow USB debugging" on the phone |
+| Rust targets | `rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android` | All four "up to date" |
+| `NDK_HOME` | `$env:NDK_HOME` | Set (NDK 30.0.16248370) |
+| `JAVA_HOME`, `ANDROID_HOME` | set with `SetEnvironmentVariable`, then `$env:JAVA_HOME`, `$env:ANDROID_HOME` | `C:\Program Files\Android\Android Studio\jbr` and `%LocalAppData%\Android\Sdk`. These two Windows values are now confirmed on his computer |
+| Java | `java -version` in `JAVA_HOME` | OpenJDK 25.0.4 |
+| Other tools | `node -v`, `npm -v`, `rustc -V`, `npm ls @tauri-apps/cli` | Node 24.22.0, npm 11.19.1, rustc 1.99.1, Tauri CLI 2.12.3 |
+
+**Watch in M1 (not verified):** Java 25 is very new. Whether the Gradle version that Tauri generates accepts it is unknown; if the build fails on the Java version, the likely fix is a different JDK for Gradle. The app identifier contains hyphens (`io.github.andra-gs...`), and Android package names do not allow them; how Tauri handles this is also unknown.
