@@ -1,7 +1,10 @@
+import { hasVisibleText } from "../lib/text";
 import { ValidationError } from "../lib/errors";
 import { calculateProgress } from "../lib/progress";
+import * as labelRepository from "../repositories/labelRepository";
 import * as repository from "../repositories/projectRepository";
 import type { ProjectDetail, ProjectStatus } from "../types/project";
+import { getProjectActivity } from "./activityService";
 
 export const PROJECT_NAME_MAX_LENGTH = 60;
 export const PROJECT_DESCRIPTION_MAX_LENGTH = 300;
@@ -10,12 +13,12 @@ export const PROJECT_DESCRIPTION_MAX_LENGTH = 300;
 function validateProjectFields(nameInput: string, descriptionInput: string): { name: string; description: string } {
   const name = nameInput.trim();
   const description = descriptionInput.trim();
-  if (name.length === 0) throw new ValidationError("Enter a project name.");
+  if (!hasVisibleText(name)) throw new ValidationError("Enter a project name.", "name");
   if (name.length > PROJECT_NAME_MAX_LENGTH) {
-    throw new ValidationError(`The name can have at most ${PROJECT_NAME_MAX_LENGTH} characters.`);
+    throw new ValidationError(`The name can have at most ${PROJECT_NAME_MAX_LENGTH} characters.`, "name");
   }
   if (description.length > PROJECT_DESCRIPTION_MAX_LENGTH) {
-    throw new ValidationError(`The description can have at most ${PROJECT_DESCRIPTION_MAX_LENGTH} characters.`);
+    throw new ValidationError(`The description can have at most ${PROJECT_DESCRIPTION_MAX_LENGTH} characters.`, "description");
   }
   return { name, description };
 }
@@ -38,11 +41,15 @@ export async function updateProject(id: string, nameInput: string, descriptionIn
 }
 
 // Everything the project page shows. Progress is calculated from the tasks, never stored.
-// Activity history arrives in Phase 3, so the list is empty until then.
 export async function getProjectDetail(id: string): Promise<ProjectDetail | undefined> {
   const data = await repository.getProjectDetail(id);
   if (!data) return undefined;
 
+  const [labelsByTask, labels, activity] = await Promise.all([
+    labelRepository.listLabelsByTask(id),
+    labelRepository.listProjectLabels(id),
+    getProjectActivity(id),
+  ]);
   const completedTaskCount = data.tasks.filter((task) => task.status === "done").length;
   return {
     id: data.id,
@@ -54,8 +61,9 @@ export async function getProjectDetail(id: string): Promise<ProjectDetail | unde
     workspaceName: data.workspaceName,
     taskCount: data.tasks.length,
     completedTaskCount,
-    tasks: data.tasks,
-    activity: [],
+    tasks: data.tasks.map((task) => ({ ...task, labels: labelsByTask.get(task.id) ?? [] })),
+    labels,
+    activity,
   };
 }
 

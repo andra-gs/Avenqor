@@ -1,3 +1,4 @@
+import { taskPath } from "../../app/navigation";
 import { Badge } from "../../components/ui/Badge";
 import { Card } from "../../components/ui/Card";
 import { EmptyMessage } from "../../components/ui/EmptyMessage";
@@ -21,6 +22,7 @@ export function MyTasksSection({ tasks }: { tasks: DashboardTask[] }) {
                 <ListRow
                   key={task.id}
                   title={task.title}
+                  titleTo={taskPath(task.id)}
                   subtitle={task.projectName}
                   trailing={due ? <Badge tone={due.tone}>{due.label}</Badge> : undefined}
                 />

@@ -1,4 +1,5 @@
 import type { ActivityEntry } from "./activity";
+import type { ProjectLabel } from "./label";
 import type { TaskItem } from "./task";
 
 export type ProjectStatus = "active" | "archived";
@@ -18,5 +19,7 @@ export interface ProjectDetail extends ProjectSummary {
   taskCount: number;
   completedTaskCount: number;
   tasks: TaskItem[];
+  // The labels of the project (the ones its tasks can use), with how many tasks carry each.
+  labels: ProjectLabel[];
   activity: ActivityEntry[];
 }

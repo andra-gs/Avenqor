@@ -24,6 +24,7 @@ export interface ProjectDetailData {
   tasks: {
     id: string;
     title: string;
+    description: string;
     status: "todo" | "in_progress" | "review" | "done";
     priority: "low" | "medium" | "high";
     dueDate: string | undefined;
@@ -50,11 +51,12 @@ export async function getProjectDetail(id: string): Promise<ProjectDetailData | 
     {
       id: string;
       title: string;
+      description: string;
       status: "todo" | "in_progress" | "review" | "done";
       priority: "low" | "medium" | "high";
       due_date: string | null;
     }[]
-  >("SELECT id, title, status, priority, due_date FROM tasks WHERE project_id = $1 ORDER BY created_at, id", [id]);
+  >("SELECT id, title, description, status, priority, due_date FROM tasks WHERE project_id = $1 ORDER BY created_at, id", [id]);
 
   return {
     id: project.id,
@@ -66,6 +68,7 @@ export async function getProjectDetail(id: string): Promise<ProjectDetailData | 
     tasks: tasks.map((row) => ({
       id: row.id,
       title: row.title,
+      description: row.description,
       status: row.status,
       priority: row.priority,
       dueDate: row.due_date ?? undefined,

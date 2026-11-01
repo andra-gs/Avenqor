@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { workspacePath } from "../app/navigation";
+import { activityPath, boardPath, workspacePath } from "../app/navigation";
 import { Badge } from "../components/ui/Badge";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
@@ -10,6 +10,8 @@ import { PlaceholderNotice } from "../components/ui/PlaceholderNotice";
 import { ProgressBar } from "../components/ui/ProgressBar";
 import { SectionHeading } from "../components/ui/SectionHeading";
 import { ActivitySection } from "../features/activity/ActivitySection";
+import { ProjectDocumentsSection } from "../features/documents/ProjectDocumentsSection";
+import { ProjectLabelsSection } from "../features/labels/ProjectLabelsSection";
 import { ProjectFormDialog } from "../features/projects/ProjectFormDialog";
 import { TaskFormDialog } from "../features/tasks/TaskFormDialog";
 import { TaskList } from "../features/tasks/TaskList";
@@ -19,7 +21,7 @@ import { describeError } from "../lib/errors";
 export function ProjectPage() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const { state, createTask, updateTask, updateProject, setTaskDone, deleteTask, setProjectStatus, deleteProject } =
+  const { state, createTask, updateTask, updateProject, setTaskDone, deleteTask, setProjectStatus, deleteProject, createLabel, updateLabel, deleteLabel } =
     useProjectDetail(projectId);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
   const [editProjectOpen, setEditProjectOpen] = useState(false);
@@ -68,9 +70,14 @@ export function ProjectPage() {
             <h2 className="text-title font-bold break-words">{project.name}</h2>
             <p className="mt-1 text-caption whitespace-pre-line text-ink-muted break-words">{project.description}</p>
           </div>
-          <Button variant="secondary" onClick={() => setEditProjectOpen(true)}>
-            Edit project
-          </Button>
+          <div className="flex shrink-0 gap-2">
+            <Button variant="secondary" onClick={() => navigate(boardPath(project.id))}>
+              Open board
+            </Button>
+            <Button variant="secondary" onClick={() => setEditProjectOpen(true)}>
+              Edit project
+            </Button>
+          </div>
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <Badge tone="accent">{project.progressPercent}% complete</Badge>
@@ -102,7 +109,11 @@ export function ProjectPage() {
         <TaskList tasks={project.tasks} onSetDone={setTaskDone} onDelete={deleteTask} onUpdate={updateTask} />
       </section>
 
-      <ActivitySection entries={project.activity} />
+      <ProjectDocumentsSection projectId={project.id} />
+
+      <ProjectLabelsSection labels={project.labels} onCreate={createLabel} onUpdate={updateLabel} onDelete={deleteLabel} />
+
+      <ActivitySection entries={project.activity} viewAllTo={activityPath({ kind: "project", id: project.id })} />
 
       <div className="flex flex-col gap-2 border-t border-border pt-6">
         <div className="flex gap-2">

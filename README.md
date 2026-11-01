@@ -1,59 +1,183 @@
-# Project Manager Desktop
+<div align="center">
 
-A local-first desktop application for organizing workspaces, projects, tasks, deadlines, documents, and progress in one place.
+<img src="src-tauri/icons/128x128@2x.png" alt="Avenqor icon" width="128" height="128">
+<br>
+<img src="Avenqor-logo.png" alt="Avenqor icon" width="128" height="128">
+</br>
 
-> **Status: Phases 0 to 2 complete (branch `phase-1-ui`, not yet merged into `main`).** Workspaces, projects, and basic tasks work on a local SQLite database, verified by the developer on Windows (2026-10-27). Calendar, My Tasks, Documents, Kanban, and backup are not built yet. See [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the current state.
+**A local-first project manager for Windows.**
+Organize workspaces, projects, tasks, deadlines, and documents in one place, on your own computer, with no account and no internet.
 
-The product name is **Avenqor** (Agreed by the developer on 2026-10-25; see [docs/BRAND.md](docs/BRAND.md)). Earlier working name: Project Collaboration App.
+![Status](https://img.shields.io/badge/status-pre--1.0-orange)
+![Platform](https://img.shields.io/badge/platform-Windows-0078D6)
+![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6)
+![SQLite](https://img.shields.io/badge/SQLite-local-003B57)
 
-## What this project is
+</div>
 
-An application for students, programmers, content creators, and small teams who need a simple way to manage projects. The first release targets **Windows** and works **fully offline**: your data is stored on your own computer, and no server or cloud account is needed.
+<p align="center">
+  <img src="docs/screenshots/dashboard.png" alt="Avenqor Dashboard" width="860">
+</p>
 
-Later phases may add GitHub integration, online collaboration, and more platforms (web, Android, iOS). Those are plans, not features. See [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md).
+> **Status: pre-1.0 (version 0.1.0).** Avenqor is under active development and has no public release yet. The work lives on the branch `phase-3-kanban`; `main` still holds the starting template and will be updated when the developer merges. Everything described below as "works" has been tested by the developer on Windows 10; see [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the dated test log.
 
-## Documentation
+## Contents
 
-| File | What it covers |
-|---|---|
-| [CLAUDE.md](CLAUDE.md) | Project instructions and development rules |
-| [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md) | Goals, target users, MVP scope, roadmap |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the application is (and will be) structured |
-| [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md) | SQLite tables and migrations |
-| [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) | What is done, what is broken, what is next |
+- [What is Avenqor?](#what-is-avenqor)
+- [Features](#features)
+- [Your data stays with you](#your-data-stays-with-you)
+- [For programmers](#for-programmers)
+- [Getting started](#getting-started)
+- [Roadmap](#roadmap)
+- [Documentation](#documentation)
 
-## Technology stack (Agreed)
+## What is Avenqor?
+
+Avenqor is a desktop app for people who juggle several pieces of work at once: university students with group assignments, programming students and small dev teams, independent developers, and content creators with production workflows.
+
+Work is organized in three levels:
+
+```
+Workspace  →  Project  →  Tasks (and their checklists, notes, labels, documents)
+```
+
+For example, the workspace **Informatics Group** can hold the projects **Final Semester Project** and **Portfolio Website**. Each project has its own board, tasks, deadlines, documents, and activity.
+
+Avenqor works **fully offline**. Nothing is sent anywhere, and no account is needed. It is a single-user app today: data on one computer is not shared with other computers, and the app does not pretend otherwise.
+
+## Features
+
+Every item below is implemented and has been tested by the developer.
+
+### Dashboard and workspaces
+
+See your workspaces, recent projects, the tasks assigned to you, and recent activity at a glance. Create, rename, and delete workspaces; each shows its projects and activity.
+
+### Projects and tasks
+
+Create, edit, archive, restore, and delete projects. Tasks have a title, description, status, priority, and deadline. Project **progress is calculated** from the tasks in Done, never typed in. Each task page also has:
+
+<p align="center">
+  <img src="docs/screenshots/task.png" alt="Task page with checklist, notes, and labels" width="760">
+</p>
+
+- a **checklist** (add, tick, edit, remove),
+- **notes** (newest first, editable),
+- **labels** with colors, defined per project.
+
+### Kanban board
+
+Four columns: To Do, In Progress, Review, Done. **Drag a card** to another column, or use the arrow buttons. Priorities, deadlines, and labels show on each card, and every move is saved right away.
+
+<p align="center">
+  <img src="docs/screenshots/board.png" alt="Kanban board" width="860">
+</p>
+
+### Calendar, deadlines, and My Tasks
+
+A month calendar shows task deadlines, with overdue ones in red. An upcoming-deadline list sits next to it. **My Tasks** lists everything assigned to you across all active projects, with a status filter.
+
+<p align="center">
+  <img src="docs/screenshots/calendar.png" alt="Calendar with deadlines" width="860">
+</p>
+
+### Project documents
+
+Keep notes, requirements, meeting notes, API references, and UI/UX decisions next to the work. Documents are plain text, searchable by title, and can be filtered by type and project.
+
+<p align="center">
+  <img src="docs/screenshots/documents.png" alt="Documents page" width="860">
+</p>
+
+### Activity history
+
+Important changes (creating, editing, moving, archiving, deleting) are recorded locally. The Dashboard, the workspace page, and the project page show the newest 8, with a link to the full list.
+
+### Search and filters
+
+One search box in the top bar (`Ctrl+K`) finds workspaces, projects, tasks, and the text of documents. On a project page you can filter the task list by status, priority, and label.
+
+### Deadline reminders
+
+Optional: once a day Avenqor shows a Windows notification for your tasks that are due today or overdue. Reminders appear only while the app is open, and Windows shows notifications for installed apps.
+
+### Backup and restore
+
+Export all your data to one readable JSON file, and restore it later. A restore **replaces everything**, so Avenqor first requires you to save a safety backup of your current data, and it checks the file completely before it changes anything. A file that is damaged or not made by Avenqor is refused with a clear message.
+
+<p align="center">
+  <img src="docs/screenshots/backup.png" alt="Backup and restore in Settings" width="760">
+</p>
+
+### Interface
+
+Clean light theme, DM Sans font, indigo accent (one accent color for every progress bar), a collapsible sidebar, and a custom title bar that shows where you are (for example *Workspace / Project / Board*). The window works down to 960x600.
+
+## Your data stays with you
+
+- All data is stored in one SQLite file, `avenqor.db`, in `%APPDATA%\io.github.andra-gs.avenqor` on Windows. It is **not** in the installation folder, so uninstalling or updating the program does not touch it.
+- Avenqor makes no network requests for its features. (The first *build* from source downloads packaging tools; running the app does not.)
+- A backup file contains your workspaces, projects, tasks, checklists, notes, labels, documents, and activity history. It does not contain program settings, because there are none yet, and it is not encrypted: store it somewhere you trust.
+
+## For programmers
+
+### Stack
 
 | Layer | Choice |
 |---|---|
-| Desktop framework | Tauri 2 |
-| Frontend | React, TypeScript, Vite |
-| Native backend | Rust (Tauri commands) |
-| Database | SQLite (local file) |
-| Styling | Tailwind CSS 4, with design tokens in `src/styles/tokens.css` and the DM Sans font bundled locally |
-| Version control | Git |
-| First release target | Windows |
+| Desktop shell | [Tauri 2](https://tauri.app) (Rust) with Microsoft Edge WebView2 |
+| Interface | React 19, TypeScript, Vite, React Router (hash routing) |
+| Styling | Tailwind CSS 4, with all colors, sizes, and radii defined once as design tokens |
+| Database | SQLite through the official Tauri SQL plugin, with numbered migrations |
+| Files | Tauri dialog and fs plugins, used only for backups |
 
-## Prerequisites (Windows)
+### Architecture in one picture
 
-These come from the official Tauri 2 documentation: <https://v2.tauri.app/start/prerequisites/> (read on 2026-10-20). They were checked on the development computer on 2026-10-21; see [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the results.
+```
+Page  →  Feature (sections)  →  Hook  →  Service  →  Repository  →  SQLite
+                                          rules,       only SQL
+                                          validation
+```
 
-Two problems came up on that computer, and may affect you too:
+- **Pages compose, hooks fetch.** A page arranges sections; data comes from hooks. Components never touch the database.
+- **Services** hold the business rules (validation, UUIDs, progress). **Repositories** are the only code that writes SQL, always with parameters.
+- **Base components** (`src/components/ui`) accept no `className`, so the look of the app can only change in one component or in `src/styles/tokens.css`. Changing the accent color in that single file recolors every screen.
+- **Activity history is written by SQLite triggers**, not by app code, so a change and its history entry are saved atomically.
+- **Restore is one SQL script** (`BEGIN IMMEDIATE … COMMIT`) sent in one call, because the SQL plugin may use a different connection per call. Backup files are treated as untrusted input.
+- **Least privilege:** the permission file lists only what the app needs, and the frontend can reach only files the person picks in the system file windows.
 
-- **Build Tools installed, but the C++ part missing.** Installing "Build Tools for Visual Studio" is not enough. Open Visual Studio Installer, choose Modify, and tick the **"Desktop development with C++"** workload.
-- **`npm` blocked in PowerShell** with "running scripts is disabled on this system". Run `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` once, then try again.
+Data conventions: UUID text IDs, deadlines as `YYYY-MM-DD`, timestamps as UTC ISO 8601, and no stored progress. The database has 11 tables (schema version 6): profiles, workspaces, workspace members, projects, tasks, checklist items, notes, labels, task labels, documents, and the activity log. Workspace members and the local profile are already in place so that roles (owner, admin, member, guest) can be supported when collaboration arrives.
 
-1. **Microsoft C++ Build Tools** with the **"Desktop development with C++"** workload. Rust on Windows needs these to compile.
-2. **Microsoft Edge WebView2.** Tauri uses it to display the interface. It is already included in Windows 10 (version 1803 and later) and in Windows 11.
-3. **Rust**, installed with `rustup`, using the **MSVC toolchain** as the default. If Rust is already installed, the Tauri docs say to run `rustup default stable-msvc`.
-4. **Node.js** (the LTS version). It runs the frontend tooling and provides `npm`. Verified with Node.js v24.22.0 and npm 11.19.1.
-5. *Only if building MSI installers:* the Windows optional feature **VBSCRIPT** must be enabled.
+Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) and [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md).
 
-From Phase 2 the app uses the official Tauri SQL plugin (`tauri-plugin-sql` 2.x, SQLite). Its documentation asks for Rust 1.90 or newer; the development computer has 1.99.1.
+### Project layout
 
-### Check what is installed
+```
+src/
+  app/ assets/ components/ features/ pages/ hooks/ services/ repositories/ lib/ styles/ types/
+src-tauri/
+  src/            Rust entry point and plugin registration
+  migrations/     numbered SQL migrations (never edited after release)
+  capabilities/   Tauri permissions
+docs/             documentation
+```
 
-Run these in Windows PowerShell. Each command prints a version number if the tool is installed, and an error if it is not.
+## Getting started
+
+Avenqor is not released yet, so for now you run it from source.
+
+### Prerequisites (Windows)
+
+From the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/):
+
+1. **Microsoft C++ Build Tools** with the **"Desktop development with C++"** workload (installing the Build Tools alone is not enough; use Visual Studio Installer, Modify).
+2. **Microsoft Edge WebView2** (already part of Windows 10 1803+ and Windows 11).
+3. **Rust**, installed with `rustup`, using the MSVC toolchain (`rustup default stable-msvc`). The SQL plugin needs Rust 1.90 or newer.
+4. **Node.js** LTS with npm.
+
+Check what you have in PowerShell:
 
 ```powershell
 node -v
@@ -63,54 +187,70 @@ cargo --version
 rustup show
 ```
 
-`rustup show` also reports the active toolchain. It should mention `msvc`.
+If `npm` says "running scripts is disabled on this system", run this once and try again:
 
-## Setup
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
 
-Get the code and install the frontend dependencies:
+### Run in development
 
 ```powershell
 git clone https://github.com/andra-gs/project-manager.git
 cd project-manager
+git checkout phase-3-kanban
 npm install
-```
-
-`npm install` was run on the developer's computer on 2026-10-21: 27 packages added, no reported vulnerabilities, about 2 minutes.
-
-How the project was created: with `create-tauri-app` 4.7.5 (template `react-ts`, package manager npm) in a temporary folder outside the repository, then renamed and copied in. You do not need to repeat this.
-
-## Development
-
-Start the desktop app in development mode:
-
-```powershell
 npm run tauri dev
 ```
 
-- The first run compiles all Rust dependencies and took about 18 minutes on the developer's computer. Later runs are expected to be faster because compiled dependencies are cached, but this has not been timed.
-- A window titled "Avenqor" opens (1200x680, centered). It shows the application frame (sidebar, top bar), the Dashboard, workspaces, projects, and tasks. Calendar, My Tasks, and Documents are still placeholder pages.
-- To stop: close the window, then press `Ctrl+C` in the terminal.
+The first run compiles all Rust dependencies (about 18 minutes on the developer's computer); later runs are faster. Close the window and press `Ctrl+C` to stop.
 
-## Build
-
-Produce a Windows release build and installers:
+### Build a Windows release
 
 ```powershell
 npm run tauri build
 ```
 
-- The first build took about 34 minutes on the developer's computer and downloaded the WiX and NSIS packaging tools from GitHub, so it needs internet access the first time.
-- Output goes to `src-tauri\target\release\`: the program `project-manager.exe`, an MSI installer in `bundle\msi\`, and an NSIS installer in `bundle\nsis\`. These files are not committed to Git.
-- The installers were built but have not yet been installed or run. The release program `project-manager.exe` was started and showed the same page as development (reported by the developer, 2026-10-22).
+The first build took about 34 minutes and downloads the WiX and NSIS packaging tools from GitHub. Output is in `src-tauri\target\release\`: the program `project-manager.exe`, an MSI installer in `bundle\msi\`, and an NSIS installer in `bundle\nsis\`. The installers have been built but not yet installed and tested; that is a 1.0 task.
 
-## Where data will be stored
+### Useful commands
 
-The application keeps structured data (workspaces, projects, tasks, and the local profile) in a local SQLite database file `avenqor.db` in `%APPDATA%\io.github.andra-gs.avenqor` (the app config folder, not the installation folder). Backup this file yourself until the JSON backup exists. Data on one computer is not shared with other computers. Backup and restore (JSON export and import) is planned for Phase 4.
+| Command | What it does |
+|---|---|
+| `npm run tauri dev` | Starts the desktop app with live reload |
+| `npm run build` | Type-checks (`tsc`) and builds the frontend; must pass before every commit |
+| `npm run tauri build` | Builds the release program and installers |
 
-## Known limitations
+There is no automated test suite yet. Features are tested by hand and the results are logged with dates in [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md).
 
-- No Kanban board, calendar, documents, activity history, labels, subtasks, or checklists yet (Phase 3).
-- No backup and restore yet (Phase 4). Data stays on this computer and is not synchronized.
-- The database folder is Roaming (see `docs/DEVELOPMENT_STATUS.md`, Known issues 7).
-- Changing the look: edit the values in `src/styles/tokens.css`.
-- Online features (accounts, sync, shared workspaces, real-time editing) are not part of the first release.
+## Roadmap
+
+| Phase | Goal | State |
+|---|---|---|
+| 0 | Environment and project setup | Done |
+| 1 | Interface foundation | Done |
+| 2 | SQLite, workspaces, projects, tasks | Done |
+| 3 | Board, calendar, task details, documents, activity | Done |
+| 4 | Backup and restore, search and filters, validation review, local notifications | In progress (all four parts done; closing check next) |
+| 5 | GitHub integration | Future |
+| 6 | Online accounts, sync, shared workspaces | Future |
+| 7 | Web, Android, iOS, and AI assistance | Future |
+
+**Version 1.0** means Phase 4 plus release preparation: a tested installer, a decision on where the database folder lives, a trademark check of the name, and a custom installer look. After 1.0, the plan is to choose between a mobile version and a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases and are **not** part of 1.0.
+
+Known limitations today: no subtasks, no templates, reminders only while the app is open, and single-user only. The database folder is in Roaming (see Known issues in the status file).
+
+## Documentation
+
+| File | What it covers |
+|---|---|
+| [CLAUDE.md](CLAUDE.md) | Project instructions and development rules |
+| [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md) | Goals, target users, MVP scope, roadmap, future plans |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the application is structured, and why |
+| [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md) | SQLite tables and migrations |
+| [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) | What is done, tested, broken, and next |
+| [docs/BRAND.md](docs/BRAND.md) | Brand identity notes (in Indonesian) |
+
+## About
+
+Avenqor is built by [Andra](https://github.com/andra-gs) as a learning project, together with Claude (Anthropic) as an AI development partner. The product name is Agreed; a trademark check has not been done yet. No license has been chosen yet, so all rights are reserved until one is added.

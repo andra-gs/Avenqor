@@ -1,6 +1,6 @@
 import { DEFAULT_PROFILE_NAME } from "../lib/appInfo";
 import { ValidationError } from "../lib/errors";
-import { getInitials } from "../lib/text";
+import { getInitials, hasVisibleText } from "../lib/text";
 import { ensureLocalProfile, getProfile, updateDisplayName } from "../repositories/profileRepository";
 import type { LocalProfile } from "../types/profile";
 
@@ -19,7 +19,7 @@ export async function getLocalProfile(): Promise<LocalProfile> {
 
 export async function renameLocalProfile(nameInput: string): Promise<void> {
   const name = nameInput.trim();
-  if (name.length === 0) throw new ValidationError("Enter a display name.");
+  if (!hasVisibleText(name)) throw new ValidationError("Enter a display name.");
   if (name.length > PROFILE_NAME_MAX_LENGTH) {
     throw new ValidationError(`The name can have at most ${PROFILE_NAME_MAX_LENGTH} characters.`);
   }

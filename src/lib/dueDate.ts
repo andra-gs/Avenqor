@@ -1,3 +1,5 @@
+import { toDateText } from "./calendar";
+
 // Turns a deadline into the label and color the interface shows.
 // A deadline is a calendar date written "YYYY-MM-DD". The final storage format is decided in Phase 2.
 export type DueTone = "danger" | "accent" | "success" | "neutral";
@@ -36,7 +38,5 @@ export function getDueInfo(dueDate: string, now: Date = new Date()): DueInfo {
 
 // Today's date as "YYYY-MM-DD" in the user's own time zone, the same format as a stored deadline.
 export function todayDateText(now: Date = new Date()): string {
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${now.getFullYear()}-${month}-${day}`;
+  return toDateText(now);
 }

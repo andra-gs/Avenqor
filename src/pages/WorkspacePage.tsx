@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router";
+import { activityPath } from "../app/navigation";
 import { Badge } from "../components/ui/Badge";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
@@ -12,9 +13,6 @@ import { ProjectCard } from "../features/projects/ProjectCard";
 import { WorkspaceActivitySection } from "../features/workspaces/WorkspaceActivitySection";
 import { useWorkspaceDetail } from "../hooks/useWorkspaceDetail";
 import { pluralize } from "../lib/text";
-import type { ProgressTone } from "../components/ui/ProgressBar";
-
-const BAR_TONES: ProgressTone[] = ["accent", "info", "success"];
 
 export function WorkspacePage() {
   const { workspaceId } = useParams();
@@ -72,8 +70,8 @@ export function WorkspacePage() {
           <EmptyMessage>No projects in this workspace yet.</EmptyMessage>
         ) : (
           <div className="grid grid-cols-2 gap-4">
-            {workspace.projects.map((project, index) => (
-              <ProjectCard key={project.id} project={project} tone={BAR_TONES[index % BAR_TONES.length]} />
+            {workspace.projects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         )}
@@ -84,13 +82,13 @@ export function WorkspacePage() {
           <SectionHeading>Archived</SectionHeading>
           <div className="grid grid-cols-2 gap-4">
             {workspace.archivedProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} tone="info" />
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         </section>
       )}
 
-      <WorkspaceActivitySection entries={workspace.activity} />
+      <WorkspaceActivitySection entries={workspace.activity} viewAllTo={activityPath({ kind: "workspace", id: workspace.id })} />
 
       <ProjectFormDialog
         open={newProjectOpen}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { activityPath } from "../app/navigation";
 import { Button } from "../components/ui/Button";
 import { EmptyMessage } from "../components/ui/EmptyMessage";
 import { PlaceholderNotice } from "../components/ui/PlaceholderNotice";
@@ -49,7 +50,7 @@ export function DashboardPage() {
         <div className="col-span-2">
           <MyTasksSection tasks={data.myTasks} />
         </div>
-        <ActivitySection entries={data.activity} />
+        <ActivitySection entries={data.activity} viewAllTo={activityPath({ kind: "all" })} />
       </div>
 
       <ProjectFormDialog

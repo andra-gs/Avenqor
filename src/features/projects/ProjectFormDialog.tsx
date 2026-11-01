@@ -4,7 +4,7 @@ import { Dialog } from "../../components/ui/Dialog";
 import { SelectField } from "../../components/ui/SelectField";
 import { TextArea } from "../../components/ui/TextArea";
 import { TextField } from "../../components/ui/TextField";
-import { describeError } from "../../lib/errors";
+import { toFormError, type FormError } from "../../lib/errors";
 import { PROJECT_DESCRIPTION_MAX_LENGTH, PROJECT_NAME_MAX_LENGTH } from "../../services/projectService";
 
 interface ProjectFormDialogProps {
@@ -22,11 +22,18 @@ interface ProjectFormDialogProps {
 
 type FormProps = Omit<ProjectFormDialogProps, "open" | "title">;
 
+// The inputs that show their own message. Any other message is shown above the buttons.
+const FIELDS = ["name"];
+
+function fieldMessage(error: FormError | undefined, field: string): string | undefined {
+  return error?.field === field ? error.message : undefined;
+}
+
 function ProjectForm({ submitLabel, onClose, initial, workspaces, onSubmit }: FormProps) {
   const [name, setName] = useState(initial?.name ?? "");
   const [description, setDescription] = useState(initial?.description ?? "");
   const [workspaceId, setWorkspaceId] = useState(workspaces?.[0]?.id);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<FormError>();
   const [busy, setBusy] = useState(false);
 
   async function handleSubmit(event: FormEvent) {
@@ -37,7 +44,7 @@ function ProjectForm({ submitLabel, onClose, initial, workspaces, onSubmit }: Fo
       await onSubmit(name, description, workspaceId);
       onClose();
     } catch (failure) {
-      setError(describeError(failure));
+      setError(toFormError(failure));
     } finally {
       setBusy(false);
     }
@@ -56,6 +63,7 @@ function ProjectForm({ submitLabel, onClose, initial, workspaces, onSubmit }: Fo
       <TextField
         label="Project name"
         value={name}
+        error={fieldMessage(error, "name")}
         maxLength={PROJECT_NAME_MAX_LENGTH}
         autoFocus
         onChange={(event) => setName(event.target.value)}
@@ -66,7 +74,7 @@ function ProjectForm({ submitLabel, onClose, initial, workspaces, onSubmit }: Fo
         maxLength={PROJECT_DESCRIPTION_MAX_LENGTH}
         onChange={(event) => setDescription(event.target.value)}
       />
-      {error && <p className="text-caption text-danger">{error}</p>}
+      {error && !FIELDS.includes(error.field ?? "") && <p className="text-caption text-danger">{error.message}</p>}
       <div className="flex justify-end gap-2">
         <Button variant="secondary" onClick={onClose} disabled={busy}>
           Cancel

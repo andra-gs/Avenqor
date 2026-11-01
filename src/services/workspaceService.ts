@@ -1,8 +1,10 @@
+import { hasVisibleText } from "../lib/text";
 import { todayDateText } from "../lib/dueDate";
 import { ValidationError } from "../lib/errors";
 import { calculateProgress } from "../lib/progress";
 import * as repository from "../repositories/workspaceRepository";
 import type { WorkspaceDetail, WorkspaceSummary } from "../types/workspace";
+import { getWorkspaceActivity } from "./activityService";
 import { getLocalProfileId } from "./profileService";
 
 export const WORKSPACE_NAME_MAX_LENGTH = 60;
@@ -10,7 +12,7 @@ export const WORKSPACE_NAME_MAX_LENGTH = 60;
 // Business rules for a workspace name. Returns the cleaned name or throws a ValidationError.
 function validateName(input: string): string {
   const name = input.trim();
-  if (name.length === 0) throw new ValidationError("Enter a workspace name.");
+  if (!hasVisibleText(name)) throw new ValidationError("Enter a workspace name.");
   if (name.length > WORKSPACE_NAME_MAX_LENGTH) {
     throw new ValidationError(`The name can have at most ${WORKSPACE_NAME_MAX_LENGTH} characters.`);
   }
@@ -22,9 +24,8 @@ export function listWorkspaces(): Promise<WorkspaceSummary[]> {
 }
 
 // Everything the workspace page shows. Progress is calculated from the task counts, never stored.
-// Activity history arrives in Phase 3, so the list is empty until then.
 export async function getWorkspaceDetail(id: string): Promise<WorkspaceDetail | undefined> {
-  const data = await repository.getWorkspaceDetail(id, todayDateText());
+  const [data, activity] = await Promise.all([repository.getWorkspaceDetail(id, todayDateText()), getWorkspaceActivity(id)]);
   if (!data) return undefined;
 
   const activeProjects = data.projects.filter((project) => project.status === "active");
@@ -46,7 +47,7 @@ export async function getWorkspaceDetail(id: string): Promise<WorkspaceDetail | 
     completedTaskCount: activeProjects.reduce((sum, project) => sum + project.completedTaskCount, 0),
     upcomingDeadlineCount: data.upcomingDeadlineCount,
     overdueTaskCount: data.overdueTaskCount,
-    activity: [],
+    activity,
   };
 }
 

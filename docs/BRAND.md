@@ -1,6 +1,6 @@
-> **Status of this document (2026-10-25):** brand identity notes written by the developer, kept here for reference. The name **Avenqor** is **Agreed** as the product name (2026-10-25). Colors, logo, and tagline are not applied and remain undecided.
+> **Status of this document (2026-10-25):** brand identity notes written by the developer, kept here for reference. The name **Avenqor** is **Agreed** as the product name (2026-10-25). The logo was added to the repository by the developer on 2026-10-29 and is applied as the application icon, the sidebar logo, and a small mark in the title bar (see DEVELOPMENT_STATUS.md). Colors and tagline are not applied and remain undecided.
 >
-> **Not applied to the application yet:** the colors, the logo direction, and the tagline. The developer is still reconsidering the logo, so the color palette in section 9 is **not** yet applied. The design tokens in `src/styles/tokens.css` still use the values from the Figma reference. Contrast note from the review on 2026-10-23: `#3B82F6` (2.5 to 3.7 against white) and `#10B981` are too light for small text on a white background (WCAG AA asks for 4.5:1); they are fine for fills and icons.
+> **Not applied to the application yet:** the colors and the tagline. The logo itself is applied (see the status note above), but the color palette in section 9 is **not** yet applied. The design tokens in `src/styles/tokens.css` still use the values from the Figma reference. Contrast note from the review on 2026-10-23: `#3B82F6` (2.5 to 3.7 against white) and `#10B981` are too light for small text on a white background (WCAG AA asks for 4.5:1); they are fine for fills and icons.
 
 # Avenqor
 ### Brand Identity Wiki

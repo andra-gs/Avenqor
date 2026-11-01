@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import { FOOTER_NAV, MAIN_NAV, workspacePath } from "../../app/navigation";
 import { useWorkspaces } from "../../hooks/useWorkspaces";
-import { APP_NAME, APP_NAME_NOTE } from "../../lib/appInfo";
+import { BrandLogo } from "../ui/BrandLogo";
 import { cx } from "../../lib/classNames";
 import { Icon, type IconName } from "../icons/Icon";
 import { IconButton } from "../ui/IconButton";
@@ -29,7 +29,7 @@ function SidebarLink({ to, icon, label, collapsed }: SidebarLinkProps) {
   return (
     <NavLink
       to={to}
-      end
+      end={to === "/"}
       title={collapsed ? label : undefined}
       aria-label={collapsed ? label : undefined}
       className={({ isActive }) =>
@@ -54,18 +54,13 @@ export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
       )}
     >
       {collapsed ? (
-        <div className="flex flex-col items-center gap-2 py-4">
-          {/* Temporary mark: the first letter of the name, until a logo is chosen. */}
-          <p className="text-heading font-bold text-accent">
-            {APP_NAME.charAt(0)}
-          </p>
+        <div className="flex flex-col items-center py-4">
           <IconButton icon="chevronsRight" label={toggleLabel} onClick={() => onCollapsedChange(false)} />
         </div>
       ) : (
         <div className="flex items-start justify-between gap-2 py-4 pr-3 pl-6">
           <div className="min-w-0 pt-1">
-            <p className="text-body-lg font-bold text-accent">{APP_NAME}</p>
-            <p className="mt-1 text-micro font-medium uppercase text-ink-muted">{APP_NAME_NOTE}</p>
+            <BrandLogo variant="wordmark" />
           </div>
           <IconButton icon="chevronsLeft" label={toggleLabel} onClick={() => onCollapsedChange(true)} />
         </div>

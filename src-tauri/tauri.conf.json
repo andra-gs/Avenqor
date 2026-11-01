@@ -13,11 +13,13 @@
     "windows": [
       {
         "title": "Avenqor",
+        "decorations": false,
         "width": 1200,
         "height": 680,
         "minWidth": 960,
         "minHeight": 600,
-        "center": true
+        "center": true,
+        "dragDropEnabled": false
       }
     ],
     "security": {
@@ -53,6 +55,15 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico",
+        "headerImage": "installer/header.bmp",
+        "sidebarImage": "installer/sidebar.bmp"
+      }
+    }
   }
 }

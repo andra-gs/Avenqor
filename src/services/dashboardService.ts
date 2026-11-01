@@ -1,12 +1,13 @@
 import { calculateProgress } from "../lib/progress";
 import * as repository from "../repositories/dashboardRepository";
+import { getRecentActivity } from "./activityService";
 import type { DashboardData } from "../types/dashboard";
 import { getLocalProfileId } from "./profileService";
 
 // Everything the dashboard shows. Progress is calculated from task counts.
-// Activity history arrives in Phase 3, so the list is empty until then.
+// The activity list is the newest entries of the local history (migration 6).
 export async function getDashboardData(): Promise<DashboardData> {
-  const rows = await repository.getDashboardRows(await getLocalProfileId());
+  const [rows, activity] = await Promise.all([repository.getDashboardRows(await getLocalProfileId()), getRecentActivity()]);
   return {
     workspaces: rows.workspaces,
     recentProjects: rows.recentProjects.map((project) => ({
@@ -17,6 +18,6 @@ export async function getDashboardData(): Promise<DashboardData> {
       progressPercent: calculateProgress(project.completedTaskCount, project.taskCount),
     })),
     myTasks: rows.myTasks,
-    activity: [],
+    activity,
   };
 }

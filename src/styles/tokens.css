@@ -20,6 +20,10 @@
   --color-accent-soft: #edebff;
   --color-on-accent: #ffffff;
 
+  /* Window title bar (the strip at the very top of the window). */
+  --color-titlebar: #f4f5fa;
+  --color-titlebar-hover: #e6e8f2;
+
   /* Surfaces and lines */
   --color-app-bg: #f6f7f9;
   --color-surface: #ffffff;
@@ -70,4 +74,5 @@
   --layout-sidebar-width: 224px;
   --layout-sidebar-collapsed-width: 64px;
   --layout-topbar-height: 72px;
+  --layout-titlebar-height: 36px;
 }
