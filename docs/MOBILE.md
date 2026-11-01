@@ -116,3 +116,13 @@ Each test is recorded with the date and the command used. All results below were
 | Other tools | `node -v`, `npm -v`, `rustc -V`, `npm ls @tauri-apps/cli` | Node 24.22.0, npm 11.19.1, rustc 1.99.1, Tauri CLI 2.12.3 |
 
 **Watch in M1 (not verified):** Java 25 is very new. Whether the Gradle version that Tauri generates accepts it is unknown; if the build fails on the Java version, the likely fix is a different JDK for Gradle. The app identifier contains hyphens (`io.github.andra-gs...`), and Android package names do not allow them; how Tauri handles this is also unknown.
+
+**M1, spike, first attempt (2026-11-01 to 2026-11-02): not finished, cancelled by the developer.**
+
+| Step | Command | Result |
+|---|---|---|
+| Create the Android project | `npm run tauri android init` | Passed. Created `src-tauri/gen/`. The app identifier became `io.github.andra_gs.avenqor` (hyphen turned into underscore, so the hyphen concern did not happen). The generated `.gitignore` already excludes local files (`local.properties`, `build`, `.gradle`, keystores). |
+| Run on the phone | `npm run tauri android dev` (phone: Infinix X669C, target `aarch64-linux-android`) | Rust compile **passed** (`Finished dev profile` in 46m 35s; Cargo also added 42 packages to `Cargo.lock`, including the notification plugin and its dependencies). Gradle 9.6.1 and Android SDK Platform 36 were downloaded. With Java 25 Gradle did start, so the Java version was not the blocker. Many deprecation warnings from the Android Gradle plugin 9 (tauri plugins and the generated project). The Kotlin compiler daemon failed ("Daemon compilation failed: null") and fell back to compiling without the daemon, which is slow. After about 59 minutes the build was at 44% and still moving (`mergeExtDexArm64Debug`, `tauri-plugin-fs`). The developer cancelled it, so **no result on the phone yet**: whether the app opens, and whether the database, dialog, fs, and notification plugins work on Android, is still unknown. |
+| Clean up | `git restore package-lock.json src-tauri/Cargo.lock` | `git status --short` showed only `?? src-tauri/gen/` |
+
+Next: repeat `android dev`, saving the full output to a file (`npm run tauri android dev 2>&1 | Tee-Object -FilePath android-dev.log`).
