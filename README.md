@@ -8,7 +8,7 @@
 **A local-first project manager for Windows.**
 Organize workspaces, projects, tasks, deadlines, and documents in one place, on your own computer, with no account and no internet.
 
-![Status](https://img.shields.io/badge/status-pre--1.0-orange)
+![Version](https://img.shields.io/badge/version-1.0.0%20rc-4a3de0)
 ![Platform](https://img.shields.io/badge/platform-Windows-0078D6)
 ![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB)
 ![React](https://img.shields.io/badge/React-19-61DAFB)
@@ -21,7 +21,7 @@ Organize workspaces, projects, tasks, deadlines, and documents in one place, on 
   <img src="docs/screenshots/dashboard.png" alt="Avenqor Dashboard" width="860">
 </p>
 
-> **Status: pre-1.0 (version 0.1.0).** Avenqor is under active development and has no public release yet. The work lives on the branch `phase-3-kanban`; `main` still holds the starting template and will be updated when the developer merges. Everything described below as "works" has been tested by the developer on Windows 10; see [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the dated test log.
+> **Status: version 1.0.0, release candidate.** All planned 1.0 features are done and tested in development mode and in the release program; the installer test is the last open step, so there is no download yet. The work is on `main` (release preparation on the branch `release-1.0`). Everything described below as "works" has been tested by the developer on Windows 10; see [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the dated test log.
 
 ## Contents
 
@@ -198,7 +198,6 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```powershell
 git clone https://github.com/andra-gs/project-manager.git
 cd project-manager
-git checkout phase-3-kanban
 npm install
 npm run tauri dev
 ```
@@ -253,4 +252,4 @@ Known limitations today: no subtasks, no templates, reminders only while the app
 
 ## About
 
-Avenqor is built by [Andra](https://github.com/andra-gs) as a learning project, together with Claude (Anthropic) as an AI development partner. The product name is Agreed; a trademark check has not been done yet. No license has been chosen yet, so all rights are reserved until one is added.
+Avenqor is built by [Andra](https://github.com/andra-gs) as a learning project, together with Claude (Anthropic) as an AI development partner. The developer reports that no registration of the name Avenqor was found in Indonesia or internationally (stated 2026-11-01; not checked by Claude, and not legal advice). No license has been chosen yet, so all rights are reserved until one is added.
