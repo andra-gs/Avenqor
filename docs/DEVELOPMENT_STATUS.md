@@ -6,8 +6,8 @@ This file is the project's memory between sessions. It must be updated before ev
 
 ## Current state
 
-- **Phase:** Phases 0, 1, and 2 are **complete** (verified by the developer; Phase 2 closing check reported 2026-10-27). Phase 3 is **complete** (drag and drop for the board was verified 2026-10-30). Phase 4 is **in progress**: step 4a (backup and restore) is verified, steps 4b to 4d are open. Work is on branches `phase-1-ui` (Phases 0 to 2) and `phase-3-kanban` (contains `phase-1-ui`), neither merged into `main`. `main` still holds the Phase 0 template.
-- **Application code:** on `main`, the unmodified template; on `phase-3-kanban` (contains `phase-1-ui`), the app frame, design tokens, and working workspace, project, task, Kanban board, Calendar, and My Tasks features on a local SQLite database (`avenqor.db`, schema version 6, eleven tables), plus the task page with checklist, notes, and labels, project documents, and local activity history. **Git repository:** `https://github.com/andra-gs/project-manager` (public).
+- **Phase:** Phases 0 to 4 are **complete** (verified by the developer; Phase 4 closing check with the release program reported 2026-11-01). The work was merged into `main` by the developer through pull requests #1 and #2 (verified on GitHub 2026-11-01: `main` contains the tip of `phase-3-kanban`). Release preparation for version 1.0.0 is in progress on the branch `release-1.0`.
+- **Application code:** on `main` and `release-1.0`: the app frame, design tokens, and working workspaces, projects, tasks (with checklists, notes, and labels), Kanban board with drag and drop, Calendar, My Tasks, project documents, local activity history, search, task filters, backup and restore, and deadline reminders, on a local SQLite database (`avenqor.db`, schema version 6, eleven tables). Version number: 1.0.0 (`package.json`, `Cargo.toml`, `tauri.conf.json`, and both lock files), set 2026-11-01 and not yet built. **Git repository:** `https://github.com/andra-gs/project-manager` (public).
 - The desktop app starts in development mode and builds a Windows release on the developer's computer (details below).
 - Implemented (verified by the developer): workspaces, projects, tasks with checklists, notes, and labels, Kanban board (buttons), Calendar, My Tasks, project documents, local activity history, custom title bar, Dashboard on real data, local profile. See the MVP table in [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md). Status labels are explained there too.
 
@@ -77,7 +77,7 @@ Fixes applied on the development computer:
 
 ## Not verified
 
-Phase 1 items still open (branch `phase-1-ui`):
+Phase 1 items still open:
 
 - Inline style attributes, which the design will need later for dynamic progress bars, are untested.
 - Scrolling was verified on the Dashboard (2026-10-24). The layout on 1366x768 and 1920x1080 screens was not reported.
@@ -88,7 +88,7 @@ Phase 1 items still open (branch `phase-1-ui`):
 
 Earlier items:
 
-- The two installers were built but never installed or run.
+- The MSI installer was built but never installed or run. The NSIS installer was installed and tested (2026-11-01).
 - The window content was seen only by the developer. No screenshot has been reviewed.
 - Whether a build works without internet access is untested. The first build downloaded the WiX and NSIS tools.
 - Claude has not read `tsconfig*.json`.
@@ -190,6 +190,7 @@ No automated tests exist and no test framework is installed. Commands actually r
 | reported 2026-11-01 | `npm run tauri dev` (step 4d reminders), checks 1 to 6 | Passed, all as expected: the Reminders section in Settings; the test notification appeared ("Avenqor: reminders work"); the daily reminder with the right counts and titles; shown once per day; off switch; time box handling. The permission `notification:default` compiled and worked |
 | reported 2026-11-01 | `npm run build` (step 4d) | Passed: `tsc` and Vite build (187 modules) without errors |
 | reported 2026-11-01 | Phase 4 closing check with the release program `project-manager.exe` (`npm run tauri build`), checks 1 to 6 | Passed, all as expected: Database line `Connected · schema version 6 · 11 tables`; one round through every area; search; backup and restore, with the new wrong-version message; the notification shows the name Avenqor; data kept after closing and reopening. Check 7 (fresh database) skipped |
+| reported 2026-11-01 | NSIS installer built from the branch `release-1.0` (version 1.0.0, `npm run tauri build`), checks 1 to 5 | Passed, all as expected: the installer pictures (no problem reported) and no SmartScreen warning (the file was built on the same computer, so it has no "downloaded from the internet" mark; a download from GitHub may differ); install, Start menu entry and icon; the installed program shows the same data; uninstall and reinstall with the application data kept (data still there); uninstall with "delete the application data" ticked (data gone, restored from the backup file). The MSI installer was not tested |
 | run by Claude 2026-10-31 | Python `sqlite3` in memory against migrations 1 to 6 with the four search queries of `searchRepository.ts`; Node (`--experimental-strip-types`) on the pure functions of `searchService.ts` (`cleanSearchText`, `toLikePattern`, `makeSnippet`); partial `tsc --noEmit` | SQL: a match in a name, description, title, or text is found regardless of letter case; `50%` and `_menu` match only those characters after escaping; no match gives empty lists. Functions: text under 2 characters gives no search, spaces are collapsed, `%` and `_` are escaped, the snippet is cut with an ellipsis and is empty when the text is not in the body. `tsc`: no errors except the known noise. The app was not built or run in the Claude workspace, so the screens (search box, activity page, label menu, bar colors) are untested |
 | run by Claude 2026-10-29 | Python `sqlite3` in memory against migrations 1 to 5 and the SQL of `documentRepository.ts`; partial `tsc --noEmit` | SQL: empty title, unknown type, and missing project rejected; list newest first without body; only active projects offered; update and delete report missing rows; deleting a project deletes its documents. `tsc`: no errors except missing-package noise and the known `database.ts(17,3)`. The app was not built or run in the Claude workspace, so the document screens are untested until the developer's run |
 | reported 2026-10-24 | `npm run build` (step 6, after the fix) | Passed: `tsc` and Vite build (74 modules) without errors |
@@ -203,8 +204,8 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
 3. **Commit author email.** Commit `e523852` records the author email as `andranooryanto@gmail.con` (typo: `.con`), so GitHub does not link it to the account `andra-gs`. The developer was advised to change `user.email` for future commits and to leave the old commit unchanged, because rewriting history is not worth the risk. Whether the setting was changed is not confirmed.
 4. **Template defaults (approved 2026-10-22, changed on branch `phase-1-ui`, verified by the developer 2026-10-22).** The `opener` plugin and its permission were removed. A strict `csp` and a development-only `devCsp` were added. The window is 1200x680, minimum 960x600, centered, so that it fits 1366x768 laptop screens. The sample page, the `greet` command, and the demo assets were removed and replaced by a placeholder page. `bundle.targets` stays `all` until release. The `style-src` policy allows inline styles (`'unsafe-inline'`), following the Tauri documentation example. This weakens the policy slightly and is to be reviewed when the design needs it.
 5. **Focus outline cut off in the sidebar (found 2026-10-23, fix verified by the developer on 2026-10-23).** In icon-only mode the focus outline of the first menu item looked cut off at the top. Cause (Claude's diagnosis, not confirmed): the menu area scrolls, and a scrolling box hides anything drawn outside its edge, such as the outline. Fix: a small top padding inside that area (`pt-1.5` in `Sidebar.tsx`).
-6. **Branch not merged.** All Phase 1 work is on `phase-1-ui`. `main` changes only when the developer merges.
-7. **Database folder is Roaming (found 2026-10-25; keeping it for now was Agreed 2026-10-27, revisit before a public release).** The plugin puts `avenqor.db` in `%APPDATA%` (Roaming), the app config folder. On a company or school computer with roaming profiles, Windows may copy that folder to a server at logon. For a personal computer this is harmless. Moving it to the Local folder would need a Rust-side path setting; decide before release.
+6. **Branches.** `phase-1-ui` and `phase-3-kanban` were merged into `main` (PR #1 and #2). Release preparation is on `release-1.0`; it is merged into `main` by the developer when the installer test passes.
+7. **Database folder is Roaming (found 2026-10-25; decided for 1.0 by the developer on 2026-11-01: it stays in Roaming).** The plugin puts `avenqor.db` in `%APPDATA%` (Roaming), the app config folder. On a company or school computer with roaming profiles, Windows may copy that folder to a server at logon. For a personal computer this is harmless. Moving it to the Local folder would need a Rust-side path setting; it can be reconsidered after 1.0 (a change would need a data move, so it is not a small edit).
 8. **Open decisions** are listed in [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) (Open questions) and [ARCHITECTURE.md](ARCHITECTURE.md): the Avenqor trademark check, the scope of attachments and templates, and the release preparation items.
 9. **New packages need a lockfile commit.** Claude's workspace cannot reach the npm registry or build Rust, so `package-lock.json` and `Cargo.lock` change only on the developer's computer after `npm install` and the first `npm run tauri dev`. They must be committed by the developer.
 10. **Drag and drop in the release program (reported broken 2026-10-31, working the same day).** After a clean rebuild the release program drags cards correctly (reported by the developer). The cause was most likely an outdated compiled program, but this was not confirmed.
@@ -217,7 +218,7 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
   - [x] Create the Tauri 2 + React + TypeScript project
   - [x] Confirm it starts in development mode
   - [x] Confirm it builds
-- [x] **Phase 1:** UI foundation (complete 2026-10-24, on branch `phase-1-ui`, not yet merged into `main`)
+- [x] **Phase 1:** UI foundation (complete 2026-10-24; merged into `main`)
   - [x] Step 1: clean the template and apply the approved defaults (verified by the developer 2026-10-22: dev and release builds load the page, minimum window size correct, no CSP error in the dev Console, `Cargo.lock` updated and pushed)
   - [x] Step 2: styling with Tailwind CSS, DM Sans font stored locally, design tokens (verified by the developer 2026-10-23: dev run without errors, accent token change took effect, packages committed)
   - [x] Step 3: layout, sidebar, and routing with placeholder pages (verified by the developer 2026-10-23, except scroll behavior at small sizes and the 1366x768 and 1920x1080 screens)
@@ -227,7 +228,7 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
   - [x] Step 6: Workspace and project overview screens with temporary mock data (verified by the developer 2026-10-24 in development mode and with `npm run build`)
   - [x] Step 7: Settings and Help screens (verified by the developer 2026-10-24 in development mode, with `npm run build`, and in a rebuilt release program)
   - [x] Proof: changing the accent color in the token file changes every screen (see `CLAUDE.md` section 19)
-- [x] **Phase 2:** SQLite, schema and migrations, workspace, project, and task CRUD (complete 2026-10-27, on branch `phase-1-ui`, not yet merged into `main`)
+- [x] **Phase 2:** SQLite, schema and migrations, workspace, project, and task CRUD (complete 2026-10-27; merged into `main`)
   - [x] SQL plugin installed, database file created (verified 2026-10-25)
   - [x] Migrations 1 and 2, five tables, owner trigger (verified 2026-10-25)
   - [x] Workspaces: create, rename, delete (verified 2026-10-25)
@@ -236,7 +237,7 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
   - [x] Dashboard, local profile, and progress on real data; mock data removed (verified 2026-10-26)
   - [x] Closing check: release build with the existing and with a fresh database file (reported by the developer 2026-10-27), documentation review (2026-10-27)
   - [x] Database location decision: Roaming folder kept for now, to be revisited before a public release (Agreed by the developer 2026-10-27; see Known issues 7)
-- [x] **Phase 3:** Kanban, calendar, task details, documents, progress, activity (complete 2026-10-30; on branch `phase-3-kanban`, not yet merged into `main`)
+- [x] **Phase 3:** Kanban, calendar, task details, documents, progress, activity (complete 2026-10-30; merged into `main`)
   - [x] 3a Kanban board with buttons to move tasks (verified 2026-10-27)
   - [x] 3b Drag and drop on the board (verified 2026-10-30 in development mode; the release program was not reported)
   - [x] 3c Calendar and deadlines (verified 2026-10-28)
@@ -248,30 +249,18 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
   - [x] 3f Project documents, migration 5 (verified 2026-10-29; two small adjustments below were made after the test)
   - [x] 3g Local activity history, migration 6 (verified 2026-10-29)
   - [x] Closing check with the release program (reported 2026-10-29; the optional fresh-database check was skipped)
-- [x] **Phase 4:** backup and restore, search, validation, notifications, testing (complete 2026-11-01; on branch `phase-3-kanban`, not yet merged into `main`)
-  - [x] 4a Backup and restore (verified 2026-10-30; the wording of the wrong-version messages was changed afterwards, 2026-10-31, and not yet re-tested)
+- [x] **Phase 4:** backup and restore, search, validation, notifications, testing (complete 2026-11-01; merged into `main`)
+  - [x] 4a Backup and restore (verified 2026-10-30; the reworded wrong-version messages were re-tested 2026-11-01)
   - [x] 4b Search and filters (verified 2026-10-31: search box and the task filters)
   - [x] 4c Validation review (verified 2026-10-31)
   - [x] 4d Local notifications (verified 2026-11-01 in development mode; the notification with the Avenqor name needs an installed build, see release preparation)
+- [ ] **Release 1.0.0:** version number, installer look, and the NSIS installer verified by the developer (2026-11-01); merge into `main` and the GitHub release are the developer's next step
 - [ ] Phases 5 to 7: GitHub integration, online architecture, platform expansion and AI (Future)
 
 ## Next task (exact)
 
 **0. Developer, done:** the Windows icon of `project-manager.exe` and the taskbar (reported 2026-10-31), drag and drop in the release program (reported 2026-10-31), and the new screenshots in `docs/screenshots/` (pushed 2026-10-31).
 
-**1. Developer: test the installer look and the installer itself (written 2026-11-01).** The NSIS installer (`-setup.exe`) now has the Avenqor pictures: `src-tauri/installer/header.bmp` (150x57, the wordmark on white) and `sidebar.bmp` (164x314, the A and the wordmark on the accent color), the Avenqor icon for installer and uninstaller, and `installMode: currentUser` (installs for the current Windows user, no administrator window).
+**1. Developer: publish version 1.0.0.** Steps are in the reply of 2026-11-01 and summarized here: (1) merge `release-1.0` into `main` (pull request), (2) on GitHub create the release `v1.0.0` from `main` and attach `Avenqor_1.0.0_x64-setup.exe` from `src-tauri\target\release\bundle\nsis\` (built from `release-1.0`; the code is the same as `main` after the merge), (3) paste the release notes, with the SHA-256 checksum from `Get-FileHash`, (4) open the "Download" link in the README and check that it reaches the release.
 
-```powershell
-git pull origin phase-3-kanban
-npm run tauri build
-```
-
-The installer is in `src-tauri\target\release\bundle\nsis\`. If the first build fails with an NSIS or image error, copy the text to Claude. Check:
-
-1. Run the setup file (do not delete your development data first). The first page shows the sidebar picture and the later pages the header picture. Tell Claude if a picture is cut off, blurry, or looks wrong. Windows may show a SmartScreen warning because the file is not signed; that is expected until a code-signing certificate exists.
-2. Install: Avenqor appears in the Start menu with the right icon, and starts. A desktop shortcut is only there if the installer offers it.
-3. The installed program shows the same data as before (same database folder), the notification name is Avenqor, and drag and drop works.
-4. Settings > Apps (Windows): Avenqor is listed with its icon. Uninstall it from there: the uninstaller shows the pictures and an option about deleting the application data. FIRST copy your backup somewhere safe (Settings, Export backup). Test once with the option unticked (the data folder `%APPDATA%\io.github.andra-gs.avenqor` stays) and reinstall: the data is still there.
-5. Optional: tick the option and check that the folder is deleted.
-
-**2. After the installer test:** the rest of release preparation (database folder decision, trademark check, code signing if wanted, version number, merging into `main`). Plans for documents as files and the Whiteboard are in [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) (Future). Merging `phase-3-kanban` into `main` is the developer's to do, when ready.
+**2. After 1.0.0:** the developer decides between the mobile version and the Documents and Whiteboard update (Future, see [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)); GitHub integration (Phase 5) and online features (Phase 6) come later. Code signing was declined for now (2026-11-01). Decided for 1.0: the database folder stays Roaming, version 1.0.0, and the developer reports that no registration of the name Avenqor was found in Indonesia or internationally (stated by the developer, not checked by Claude).

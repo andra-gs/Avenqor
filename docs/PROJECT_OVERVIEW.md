@@ -97,9 +97,9 @@ Tauri does not automatically produce a complete mobile application. Mobile optio
 
 **Order of work (Agreed 2026-10-30).** First finish the application up to release **1.0**. Only after 1.0 does the developer decide whether to build the mobile version first or to update Documents and the Whiteboard. Nothing in the two sections below is built before then, and the details may still change when that work starts.
 
-**Scope of 1.0 (Agreed 2026-10-30):** Phase 4 complete (backup and restore, search and filters, validation review, local notifications); drag and drop on the Kanban board (step 3b); release preparation (a tested installer, the decision on the database folder now in Roaming, trademark check of the name Avenqor, customizing the installer and uninstaller). **Not in 1.0:** GitHub integration (Phase 5) and online features (Phase 6).
+**Scope of 1.0 (Agreed 2026-10-30):** Phase 4 complete (backup and restore, search and filters, validation review, local notifications); drag and drop on the Kanban board (step 3b); release preparation (a tested installer, the database folder stays in Roaming (decided 2026-11-01), the name Avenqor (the developer reports no registration was found in Indonesia or internationally, 2026-11-01, not checked by Claude), version 1.0.0, customizing the installer and uninstaller). **Not in 1.0:** GitHub integration (Phase 5) and online features (Phase 6).
 
-**Installer and uninstaller look (Agreed as a 1.0 item 2026-10-30; first version written 2026-11-01, awaiting test).** Tauri's NSIS installer (the `-setup.exe`) can be customized in `tauri.conf.json` under `bundle > windows > nsis`: header and sidebar pictures (`headerImage` 150x57 px, `sidebarImage` 164x314 px), installer and uninstaller icons, a separate header picture for the uninstaller, the language list, the Start Menu folder, and a hooks file (`installerHooks`) or a full custom template for more. The MSI installer has fewer options (banner and dialog pictures). The pages and layout of the NSIS wizard cannot be redesigned freely without a custom template, which is more work. (Source: the Tauri `NsisConfig` reference, read 2026-10-30.)
+**Installer and uninstaller look (Agreed as a 1.0 item 2026-10-30; verified by the developer 2026-11-01).** Tauri's NSIS installer (the `-setup.exe`) can be customized in `tauri.conf.json` under `bundle > windows > nsis`: header and sidebar pictures (`headerImage` 150x57 px, `sidebarImage` 164x314 px), installer and uninstaller icons, a separate header picture for the uninstaller, the language list, the Start Menu folder, and a hooks file (`installerHooks`) or a full custom template for more. The MSI installer has fewer options (banner and dialog pictures). The pages and layout of the NSIS wizard cannot be redesigned freely without a custom template, which is more work. (Source: the Tauri `NsisConfig` reference, read 2026-10-30.)
 
 ### Documents as files and folders (Future)
 
@@ -139,7 +139,7 @@ Screens in the Figma file: Dashboard, Workspace, Project Board, Project Overview
 
 These need a decision before the related work starts.
 
-- Whether the trademark check of the name Avenqor was or will be done (the name itself is Agreed).
+- Trademark: the developer reports (2026-11-01) that no registration of the name Avenqor was found in Indonesia or internationally. Not checked by Claude and not legal advice; a formal search may still be wise before commercial use.
 - The scope of templates (feature I).
 - Whether file attachments are supported: planned only through the Documents update after 1.0.
 
