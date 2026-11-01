@@ -77,7 +77,7 @@ Fixes applied on the development computer:
 
 ## Not verified
 
-Phase 1 items still open (branch `phase-1-ui`):
+Phase 1 items still open:
 
 - Inline style attributes, which the design will need later for dynamic progress bars, are untested.
 - Scrolling was verified on the Dashboard (2026-10-24). The layout on 1366x768 and 1920x1080 screens was not reported.
@@ -88,7 +88,7 @@ Phase 1 items still open (branch `phase-1-ui`):
 
 Earlier items:
 
-- The two installers were built but never installed or run.
+- The MSI installer was built but never installed or run. The NSIS installer was installed and tested (2026-11-01).
 - The window content was seen only by the developer. No screenshot has been reviewed.
 - Whether a build works without internet access is untested. The first build downloaded the WiX and NSIS tools.
 - Claude has not read `tsconfig*.json`.
@@ -190,6 +190,7 @@ No automated tests exist and no test framework is installed. Commands actually r
 | reported 2026-11-01 | `npm run tauri dev` (step 4d reminders), checks 1 to 6 | Passed, all as expected: the Reminders section in Settings; the test notification appeared ("Avenqor: reminders work"); the daily reminder with the right counts and titles; shown once per day; off switch; time box handling. The permission `notification:default` compiled and worked |
 | reported 2026-11-01 | `npm run build` (step 4d) | Passed: `tsc` and Vite build (187 modules) without errors |
 | reported 2026-11-01 | Phase 4 closing check with the release program `project-manager.exe` (`npm run tauri build`), checks 1 to 6 | Passed, all as expected: Database line `Connected · schema version 6 · 11 tables`; one round through every area; search; backup and restore, with the new wrong-version message; the notification shows the name Avenqor; data kept after closing and reopening. Check 7 (fresh database) skipped |
+| reported 2026-11-01 | NSIS installer built from the branch `release-1.0` (version 1.0.0, `npm run tauri build`), checks 1 to 5 | Passed, all as expected: the installer pictures (no problem reported) and no SmartScreen warning (the file was built on the same computer, so it has no "downloaded from the internet" mark; a download from GitHub may differ); install, Start menu entry and icon; the installed program shows the same data; uninstall and reinstall with the application data kept (data still there); uninstall with "delete the application data" ticked (data gone, restored from the backup file). The MSI installer was not tested |
 | run by Claude 2026-10-31 | Python `sqlite3` in memory against migrations 1 to 6 with the four search queries of `searchRepository.ts`; Node (`--experimental-strip-types`) on the pure functions of `searchService.ts` (`cleanSearchText`, `toLikePattern`, `makeSnippet`); partial `tsc --noEmit` | SQL: a match in a name, description, title, or text is found regardless of letter case; `50%` and `_menu` match only those characters after escaping; no match gives empty lists. Functions: text under 2 characters gives no search, spaces are collapsed, `%` and `_` are escaped, the snippet is cut with an ellipsis and is empty when the text is not in the body. `tsc`: no errors except the known noise. The app was not built or run in the Claude workspace, so the screens (search box, activity page, label menu, bar colors) are untested |
 | run by Claude 2026-10-29 | Python `sqlite3` in memory against migrations 1 to 5 and the SQL of `documentRepository.ts`; partial `tsc --noEmit` | SQL: empty title, unknown type, and missing project rejected; list newest first without body; only active projects offered; update and delete report missing rows; deleting a project deletes its documents. `tsc`: no errors except missing-package noise and the known `database.ts(17,3)`. The app was not built or run in the Claude workspace, so the document screens are untested until the developer's run |
 | reported 2026-10-24 | `npm run build` (step 6, after the fix) | Passed: `tsc` and Vite build (74 modules) without errors |
@@ -249,31 +250,17 @@ The TypeScript check (`tsc`) is part of `npm run build`, so it passed as part of
   - [x] 3g Local activity history, migration 6 (verified 2026-10-29)
   - [x] Closing check with the release program (reported 2026-10-29; the optional fresh-database check was skipped)
 - [x] **Phase 4:** backup and restore, search, validation, notifications, testing (complete 2026-11-01; merged into `main`)
-  - [x] 4a Backup and restore (verified 2026-10-30; the wording of the wrong-version messages was changed afterwards, 2026-10-31, and not yet re-tested)
+  - [x] 4a Backup and restore (verified 2026-10-30; the reworded wrong-version messages were re-tested 2026-11-01)
   - [x] 4b Search and filters (verified 2026-10-31: search box and the task filters)
   - [x] 4c Validation review (verified 2026-10-31)
   - [x] 4d Local notifications (verified 2026-11-01 in development mode; the notification with the Avenqor name needs an installed build, see release preparation)
+- [ ] **Release 1.0.0:** version number, installer look, and the NSIS installer verified by the developer (2026-11-01); merge into `main` and the GitHub release are the developer's next step
 - [ ] Phases 5 to 7: GitHub integration, online architecture, platform expansion and AI (Future)
 
 ## Next task (exact)
 
 **0. Developer, done:** the Windows icon of `project-manager.exe` and the taskbar (reported 2026-10-31), drag and drop in the release program (reported 2026-10-31), and the new screenshots in `docs/screenshots/` (pushed 2026-10-31).
 
-**1. Developer: test the installer look and the installer itself (written 2026-11-01; the developer will report later because the build is slow). Use the branch `release-1.0`, so the installer carries version 1.0.0.** The NSIS installer (`-setup.exe`) now has the Avenqor pictures: `src-tauri/installer/header.bmp` (150x57, the wordmark on white) and `sidebar.bmp` (164x314, the A and the wordmark on the accent color), the Avenqor icon for installer and uninstaller, and `installMode: currentUser` (installs for the current Windows user, no administrator window).
+**1. Developer: publish version 1.0.0.** Steps are in the reply of 2026-11-01 and summarized here: (1) merge `release-1.0` into `main` (pull request), (2) on GitHub create the release `v1.0.0` from `main` and attach `Avenqor_1.0.0_x64-setup.exe` from `src-tauri\target\release\bundle\nsis\` (built from `release-1.0`; the code is the same as `main` after the merge), (3) paste the release notes, with the SHA-256 checksum from `Get-FileHash`, (4) open the "Download" link in the README and check that it reaches the release.
 
-```powershell
-git fetch origin
-git checkout release-1.0
-git pull origin release-1.0
-npm run tauri build
-```
-
-The installer is in `src-tauri\target\release\bundle\nsis\`. If the first build fails with an NSIS or image error, copy the text to Claude. Check:
-
-1. Run the setup file (do not delete your development data first). The first page shows the sidebar picture and the later pages the header picture. Tell Claude if a picture is cut off, blurry, or looks wrong. Windows may show a SmartScreen warning because the file is not signed; that is expected until a code-signing certificate exists.
-2. Install: Avenqor appears in the Start menu with the right icon, and starts. A desktop shortcut is only there if the installer offers it.
-3. The installed program shows the same data as before (same database folder), the notification name is Avenqor, and drag and drop works.
-4. Settings > Apps (Windows): Avenqor is listed with its icon. Uninstall it from there: the uninstaller shows the pictures and an option about deleting the application data. FIRST copy your backup somewhere safe (Settings, Export backup). Test once with the option unticked (the data folder `%APPDATA%\io.github.andra-gs.avenqor` stays) and reinstall: the data is still there.
-5. Optional: tick the option and check that the folder is deleted.
-
-**2. After the installer test:** merge `release-1.0` into `main`, tag `v1.0.0`, and publish the installer (for example as a GitHub Release). Code signing is optional (see ARCHITECTURE.md, Release preparation); without it Windows SmartScreen warns on first run. Decided 2026-11-01: database folder stays Roaming; version 1.0.0; the developer reports that no one holds a registration of the name Avenqor in Indonesia or internationally (stated by the developer, not checked by Claude). Plans for documents as files and the Whiteboard are in [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) (Future). Merging `phase-3-kanban` into `main` is the developer's to do, when ready.
+**2. After 1.0.0:** the developer decides between the mobile version and the Documents and Whiteboard update (Future, see [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)); GitHub integration (Phase 5) and online features (Phase 6) come later. Code signing was declined for now (2026-11-01). Decided for 1.0: the database folder stays Roaming, version 1.0.0, and the developer reports that no registration of the name Avenqor was found in Indonesia or internationally (stated by the developer, not checked by Claude).

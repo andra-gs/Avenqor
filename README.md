@@ -8,7 +8,7 @@
 **A local-first project manager for Windows.**
 Organize workspaces, projects, tasks, deadlines, and documents in one place, on your own computer, with no account and no internet.
 
-![Version](https://img.shields.io/badge/version-1.0.0%20rc-4a3de0)
+![Version](https://img.shields.io/badge/version-1.0.0-4a3de0)
 ![Platform](https://img.shields.io/badge/platform-Windows-0078D6)
 ![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB)
 ![React](https://img.shields.io/badge/React-19-61DAFB)
@@ -21,10 +21,11 @@ Organize workspaces, projects, tasks, deadlines, and documents in one place, on 
   <img src="docs/screenshots/dashboard.png" alt="Avenqor Dashboard" width="860">
 </p>
 
-> **Status: version 1.0.0, release candidate.** All planned 1.0 features are done and tested in development mode and in the release program; the installer test is the last open step, so there is no download yet. The work is on `main` (release preparation on the branch `release-1.0`). Everything described below as "works" has been tested by the developer on Windows 10; see [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the dated test log.
+> **Version 1.0.0** is the first release. Every feature below has been tested by the developer on Windows 10, in development mode and in the installed program; see [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the dated test log. Avenqor is a one-person project, so expect rough edges and please report them as [issues](https://github.com/andra-gs/project-manager/issues).
 
 ## Contents
 
+- [Download](#download)
 - [What is Avenqor?](#what-is-avenqor)
 - [Features](#features)
 - [Your data stays with you](#your-data-stays-with-you)
@@ -32,6 +33,16 @@ Organize workspaces, projects, tasks, deadlines, and documents in one place, on 
 - [Getting started](#getting-started)
 - [Roadmap](#roadmap)
 - [Documentation](#documentation)
+
+## Download
+
+**[Download the latest Windows installer](https://github.com/andra-gs/project-manager/releases/latest)** (file named like `Avenqor_1.0.0_x64-setup.exe`, found under "Assets" on the release page).
+
+1. Run the downloaded file. It installs Avenqor for your Windows user only, so no administrator password is needed.
+2. Windows may show **"Windows protected your PC"** (SmartScreen). The installer is not code-signed yet, because a certificate costs money. Click **More info**, then **Run anyway**. You can compare the file's SHA-256 checksum, given on the release page, with the result of `Get-FileHash .\Avenqor_1.0.0_x64-setup.exe` in PowerShell.
+3. Start Avenqor from the Start menu. Your data is saved on your computer (see [Your data stays with you](#your-data-stays-with-you)).
+
+Requirements: Windows 10 (version 1803 or later) or Windows 11, 64-bit. **Uninstalling** keeps your data unless you tick the option to delete the application data. To move to another computer, use **Settings, Backup and restore**.
 
 ## What is Avenqor?
 
@@ -166,7 +177,7 @@ docs/             documentation
 
 ## Getting started
 
-Avenqor is not released yet, so for now you run it from source.
+If you only want to use Avenqor, [download the installer](#download). The rest of this section is for running it from source.
 
 ### Prerequisites (Windows)
 
@@ -210,7 +221,7 @@ The first run compiles all Rust dependencies (about 18 minutes on the developer'
 npm run tauri build
 ```
 
-The first build took about 34 minutes and downloads the WiX and NSIS packaging tools from GitHub. Output is in `src-tauri\target\release\`: the program `project-manager.exe`, an MSI installer in `bundle\msi\`, and an NSIS installer in `bundle\nsis\`. The installers have been built but not yet installed and tested; that is a 1.0 task.
+The first build took about 34 minutes and downloads the WiX and NSIS packaging tools from GitHub. Output is in `src-tauri\target\release\`: the program `project-manager.exe`, an MSI installer in `bundle\msi\`, and an NSIS installer in `bundle\nsis\`. The NSIS installer (`-setup.exe`) was installed, tested, and uninstalled on the developer's computer (reported 2026-11-01); the MSI installer was not tested.
 
 ### Useful commands
 
@@ -230,12 +241,12 @@ There is no automated test suite yet. Features are tested by hand and the result
 | 1 | Interface foundation | Done |
 | 2 | SQLite, workspaces, projects, tasks | Done |
 | 3 | Board, calendar, task details, documents, activity | Done |
-| 4 | Backup and restore, search and filters, validation review, local notifications | In progress (all four parts done; closing check next) |
+| 4 | Backup and restore, search and filters, validation review, local notifications | Done |
 | 5 | GitHub integration | Future |
 | 6 | Online accounts, sync, shared workspaces | Future |
 | 7 | Web, Android, iOS, and AI assistance | Future |
 
-**Version 1.0** means Phase 4 plus release preparation: a tested installer, a decision on where the database folder lives, a trademark check of the name, and a custom installer look. After 1.0, the plan is to choose between a mobile version and a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases and are **not** part of 1.0.
+**Version 1.0** is Phase 4 plus release preparation, and it is done. The next step is the developer's choice between a mobile version and a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases.
 
 Known limitations today: no subtasks, no templates, reminders only while the app is open, and single-user only. The database folder is in Roaming (see Known issues in the status file).
 

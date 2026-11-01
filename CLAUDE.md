@@ -16,7 +16,7 @@ Project name: Project Manager Desktop
 
 Repository and folder name: project-manager-desktop
 
-Product name: Avenqor (Agreed by the developer on 2026-10-25; previously "Project Collaboration App". Whether trademark checks were done is not recorded). Brand notes: docs/BRAND.md.
+Product name: Avenqor (Agreed by the developer on 2026-10-25; previously "Project Collaboration App". On 2026-11-01 the developer reported that no registration of the name was found in Indonesia or internationally; this was not checked by Claude and is not legal advice). Brand notes: docs/BRAND.md.
 
 ## 3. PRODUCT VISION
 
