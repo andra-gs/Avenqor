@@ -80,8 +80,8 @@ Each step is small, tested by the developer, and recorded in [DEVELOPMENT_STATUS
 |---|---|---|
 | M0 | Set up the Android tools (above) and check them with a few commands | The tools are found; the phone is listed |
 | M1 | The spike: add the Android project to the repository and run the **unchanged** app on the phone | Record exactly what works and what breaks (database, plugins, layout) |
-| M2 | Separate desktop-only code: title bar, window permissions, window settings | Desktop still works exactly as before (the 1.0 behavior is the reference). **Written 2026-11-02, not yet tested** (see below) |
-| M3 | Mobile layout: navigation, one-column pages, touch sizes | The main screens are usable on the phone |
+| M2 | Separate desktop-only code: title bar, window permissions, window settings | Desktop still works exactly as before (the 1.0 behavior is the reference). **Passed 2026-11-02** (see below) |
+| M3 | Mobile layout: navigation, one-column pages, touch sizes | The main screens are usable on the phone. **First part written 2026-11-03, not yet tested** (see below) |
 | M4 | Data features on the phone: backup export and import, reminders, search | Each one works with real data |
 | M5 | A signed Android package (APK) that can be installed without the USB cable | Installed and tested on the phone |
 | M6 | Release (for example as a GitHub Release, like 1.0) | Download and install work |
@@ -165,4 +165,18 @@ These are the work of steps M2 (desktop-only code) and M3 (mobile layout). Items
 - `src/components/layout/AppShell.tsx`: the title bar is drawn only when `HAS_DESKTOP_WINDOW` is true. Because the title bar is not drawn on a phone, the window API (`src/lib/windowControls.ts`) is not called there.
 - `src-tauri/capabilities/`: the four window permissions moved from `default.json` to the new `desktop.json`, limited to Windows, macOS, and Linux. `default.json` keeps the rest (database, backup files, notifications).
 - Not changed yet: the window settings in `tauri.conf.json` (`decorations`, `minWidth`, `dragDropEnabled`). What they do on Android is still to verify.
-- Tests still to run: (1) desktop: `npm run build` and `npm run tauri dev`, the title bar and its buttons work as in 1.0; (2) phone: build and install the APK, the title bar is gone.
+- Tests (reported by the developer, 2026-11-03): the desktop app still shows the title bar as before; on the phone the title bar is gone. **M2 passed.**
+
+**M3, mobile layout, first part (written 2026-11-03, branch `mobile-m3`; NOT yet tested).** Design choice (Agreed by the developer, 2026-11-03): **bottom navigation** (option A), not a slide-in menu. The layout switches by screen **width**: below 768 px (Tailwind `md`) the phone layout is used, from 768 px up the desktop layout, which is unchanged (the desktop window minimum is 960 px). A phone held sideways is about 800 px wide, so it gets the desktop layout, as the developer saw before.
+
+| # | Observation (from M1) | What was changed (Proposed fix, to verify on the phone) |
+|---|---|---|
+| 2 | Search box pushes the profile out | On a phone the top bar has two rows: title and avatar on top, the search box full width below. The profile name is hidden (avatar only). The result list is as wide as the box. `SearchBox.tsx`, `TopBar.tsx` |
+| 3 | Closed sidebar still takes space | The sidebar is not shown on a phone (`Sidebar.tsx`). The new `BottomNav.tsx` replaces it: Dashboard, My Tasks, Calendar, Documents, and **Menu**. The new Menu page (`src/pages/MenuPage.tsx`, route `/menu`) lists the workspaces, Settings, and Help. Because the sidebar is gone, there is no "open" button to keep |
+| 4 | Pages wider than the screen (zoom out) | Fixed column counts were the likely cause (`grid-cols-3`, `grid-cols-4`, `grid-cols-2` in Dashboard, Workspace, and Recent Projects) together with the 288 px search box and its 448 px result list. They are now one or two columns on a phone. Not yet checked: the Calendar month grid, Documents, Task page, Board, Settings |
+| 5 | "New Project" on the Dashboard | Hidden on a phone (`DashboardPage.tsx`) |
+| 6 | Cards do not fit | Same changes as row 4, plus smaller page padding on a phone (`AppShell.tsx`) |
+
+Also: `index.html` has `viewport-fit=cover`; the top bar and bottom bar use `env(safe-area-inset-*)` so they stay clear of the phone's status bar and navigation bar. In the M1 photo the status bar covered the title; **whether `env(safe-area-inset-*)` works in this Android web view is not verified.** The search box no longer shows "Ctrl+K" on Android (`HAS_KEYBOARD_SHORTCUTS` in `src/lib/platform.ts`). A new token `--layout-bottomnav-height` is in `tokens.css`.
+
+Tests still to run: (1) desktop: `npm run build`, then `npm run tauri dev`: every screen looks exactly as in 1.0 (title bar, sidebar, top bar, Dashboard with the New Project button, Workspace page); (2) phone: build, install, check the six observations.

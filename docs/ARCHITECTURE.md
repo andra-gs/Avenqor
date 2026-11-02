@@ -238,3 +238,5 @@ Steps in order. Each note says what was added and why; "verified" dates are from
 - **Repository**: code that is the only gateway to stored data.
 - **Migration**: a numbered, versioned change to the database structure, applied in order, so existing user data survives upgrades.
 - **Transaction**: a group of database changes that either all succeed or all fail.
+
+- Mobile layout, first part (written 2026-11-03, not yet tested; see MOBILE.md): below 768 px (Tailwind `md`) the sidebar is hidden and `src/components/layout/BottomNav.tsx` shows the main navigation; its fifth button opens `src/pages/MenuPage.tsx` (route `/menu`, entry `MENU_NAV` in `src/app/navigation.ts`). The top bar uses two rows, and several fixed grids became one or two columns. From 768 px up nothing changes. `src/lib/platform.ts` tells which device runs the app (`IS_ANDROID`, `HAS_DESKTOP_WINDOW`, `HAS_KEYBOARD_SHORTCUTS`); it decides what exists, while width decides how wide the layout is.

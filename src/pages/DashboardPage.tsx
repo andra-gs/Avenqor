@@ -33,21 +33,23 @@ export function DashboardPage() {
           <h2 className="text-display font-bold">{profile.displayName ? `${greeting}, ${profile.displayName}` : greeting}</h2>
           <p className="text-body text-ink-muted">Here’s what needs your attention today.</p>
         </div>
-        <Button
-          icon="plus"
-          disabled={data.workspaces.length === 0}
-          title={data.workspaces.length === 0 ? "Create a workspace in Settings first" : undefined}
-          onClick={() => setNewProjectOpen(true)}
-        >
-          New Project
-        </Button>
+        <div className="hidden md:block">
+          <Button
+            icon="plus"
+            disabled={data.workspaces.length === 0}
+            title={data.workspaces.length === 0 ? "Create a workspace in Settings first" : undefined}
+            onClick={() => setNewProjectOpen(true)}
+          >
+            New Project
+          </Button>
+        </div>
       </div>
 
       <WorkspacesSection workspaces={data.workspaces} />
       <RecentProjectsSection projects={data.recentProjects} />
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="md:col-span-2">
           <MyTasksSection tasks={data.myTasks} />
         </div>
         <ActivitySection entries={data.activity} viewAllTo={activityPath({ kind: "all" })} />

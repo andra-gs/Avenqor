@@ -49,7 +49,7 @@ export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
   return (
     <aside
       className={cx(
-        "relative flex shrink-0 flex-col border-r border-border bg-surface",
+        "relative hidden shrink-0 flex-col border-r border-border bg-surface md:flex",
         collapsed ? "w-(--layout-sidebar-collapsed-width)" : "w-(--layout-sidebar-width)",
       )}
     >

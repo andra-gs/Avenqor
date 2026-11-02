@@ -19,16 +19,17 @@ export function TopBar() {
   const heading = getPageHeading(pathname, { workspace, project, task });
 
   return (
-    <header className="flex h-(--layout-topbar-height) shrink-0 items-center justify-between gap-4 border-b border-border bg-surface px-9">
-      <div className="min-w-0">
+    <header className="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b border-border bg-surface px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 md:h-(--layout-topbar-height) md:flex-nowrap md:px-9 md:py-0">
+      <div className="min-w-0 flex-1 md:flex-none">
         <h1 className="truncate text-title font-bold">{heading.title}</h1>
         <p className="truncate text-small text-ink-muted">{heading.subtitle}</p>
       </div>
-      <div className="flex shrink-0 items-center gap-5">
+      {/* On a phone the wrapper disappears (contents) so the search box can take its own row under the title. */}
+      <div className="contents md:flex md:shrink-0 md:items-center md:gap-5">
         <SearchBox />
         <div className="flex items-center gap-3">
           <Avatar initials={profile.initials} />
-          <div>
+          <div className="hidden md:block">
             <p className="text-body font-semibold">{profile.displayName}</p>
             <p className="text-caption text-ink-muted">Local profile</p>
           </div>

@@ -10,7 +10,7 @@ export function RecentProjectsSection({ projects }: { projects: ProjectSummary[]
       {projects.length === 0 ? (
         <EmptyMessage>No projects yet. Create a workspace in Settings, then add a project.</EmptyMessage>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

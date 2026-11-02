@@ -7,3 +7,6 @@ export const IS_ANDROID = typeof navigator !== "undefined" && /Android/i.test(na
 
 // Desktop-only parts (window title bar and window buttons) are shown when this is true.
 export const HAS_DESKTOP_WINDOW = !IS_ANDROID;
+
+// Ctrl+K and similar keyboard hints are shown only where a keyboard is normally used.
+export const HAS_KEYBOARD_SHORTCUTS = !IS_ANDROID;

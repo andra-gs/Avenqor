@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import { useReminderChecks } from "../../hooks/useReminderChecks";
 import { useSidebarCollapsed } from "../../hooks/useSidebarCollapsed";
 import { HAS_DESKTOP_WINDOW } from "../../lib/platform";
+import { BottomNav } from "./BottomNav";
 import { Sidebar } from "./Sidebar";
 import { TitleBar } from "./TitleBar";
 import { TopBar } from "./TopBar";
@@ -18,9 +19,10 @@ export function AppShell() {
         <Sidebar collapsed={collapsed} onCollapsedChange={setCollapsed} />
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar />
-          <main className="flex-1 overflow-auto px-9 py-8">
+          <main className="flex-1 overflow-auto px-4 py-5 md:px-9 md:py-8">
             <Outlet />
           </main>
+          <BottomNav />
         </div>
       </div>
     </div>

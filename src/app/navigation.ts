@@ -26,6 +26,9 @@ export const FOOTER_NAV: NavItem[] = [
   { path: "/help", label: "Help & feedback", subtitle: "Help and feedback", icon: "help" },
 ];
 
+// The "Menu" page, reached from the bottom navigation on a phone. It lists what does not fit in the bar.
+export const MENU_NAV: NavItem = { path: "/menu", label: "Menu", subtitle: "Workspaces, settings, and help", icon: "more" };
+
 const WORKSPACE_PATH_PATTERN = "/workspaces/:workspaceId";
 const PROJECT_PATH_PATTERN = "/projects/:projectId";
 const BOARD_PATH_PATTERN = "/projects/:projectId/board";
@@ -103,7 +106,7 @@ interface BreadcrumbContext {
 
 // The path to the current page, for example Workspace > Project > Board.
 export function getBreadcrumbs(pathname: string, context: BreadcrumbContext): Breadcrumb[] {
-  const item = [...MAIN_NAV, ...FOOTER_NAV].find((navItem) => navItem.path === pathname);
+  const item = [...MAIN_NAV, ...FOOTER_NAV, MENU_NAV].find((navItem) => navItem.path === pathname);
   if (item) return [{ label: item.label }];
 
   if (matchPath(ALL_ACTIVITY_PATH_PATTERN, pathname)) return [{ label: "Activity" }];

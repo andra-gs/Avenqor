@@ -38,7 +38,7 @@ export function WorkspacePage() {
       </div>
 
       <Card>
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           <Stat label="Projects" value={activeProjects} note="active projects" noteTone="accent" />
           <Stat
             label="Tasks"
@@ -69,7 +69,7 @@ export function WorkspacePage() {
         {workspace.projects.length === 0 ? (
           <EmptyMessage>No projects in this workspace yet.</EmptyMessage>
         ) : (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {workspace.projects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
@@ -80,7 +80,7 @@ export function WorkspacePage() {
       {workspace.archivedProjects.length > 0 && (
         <section className="flex flex-col gap-3">
           <SectionHeading>Archived</SectionHeading>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {workspace.archivedProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
