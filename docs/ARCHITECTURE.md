@@ -148,7 +148,7 @@ src/
   types/           activity, backup, calendar, dashboard, document, label, myTasks, profile, project, search, task, taskExtras, workspace
 src-tauri/
   Cargo.toml, Cargo.lock, build.rs, tauri.conf.json
-  capabilities/    default.json
+  capabilities/    default.json, desktop.json
   icons/           application icons
   migrations/      0001 to 0006 (SQL files, registered in lib.rs)
   src/             main.rs, lib.rs
@@ -186,7 +186,7 @@ Verified: in `npm run tauri dev` the components render, hover and keyboard focus
 
 - `src-tauri/tauri.conf.json`: product name `Avenqor`, version `1.0.0` (set 2026-11-01; the installer built from it was tested by the developer the same day), identifier `io.github.andra-gs.avenqor` (both changed 2026-10-25, before any data was stored; verified: the database file is created in that folder). In development it runs `npm run dev` and loads `http://localhost:1420`. For a release it runs `npm run build` (`tsc && vite build`) and packages the files from `dist`. One window of 1200x680 (minimum 960x600, centered). `bundle.targets` is `all`.
 - `tauri.conf.json` `plugins.sql.preload` opens `sqlite:avenqor.db` at startup (verified by the developer 2026-10-25: the file `avenqor.db` is created in `%APPDATA%\io.github.andra-gs.avenqor`).
-- `src-tauri/capabilities/default.json`: for the `main` window: `core:default`; four window permissions for the custom title bar (`core:window:allow-minimize`, `allow-toggle-maximize`, `allow-close`, `allow-start-dragging`); `sql:default` and `sql:allow-execute`; four file permissions for backups (`dialog:allow-save`, `dialog:allow-open`, `fs:allow-write-text-file`, `fs:allow-read-text-file`); and `notification:default` for reminders.
+- `src-tauri/capabilities/default.json` (every platform) and `desktop.json` (desktop only, `"platforms": ["windows","macOS","linux"]`, split on 2026-11-02 for the Android version, written and not yet tested): for the `main` window, `default.json` has `core:default`; `desktop.json` has the four window permissions for the custom title bar (`core:window:allow-minimize`, `allow-toggle-maximize`, `allow-close`, `allow-start-dragging`); `default.json` also has `sql:default` and `sql:allow-execute`; four file permissions for backups (`dialog:allow-save`, `dialog:allow-open`, `fs:allow-write-text-file`, `fs:allow-read-text-file`); and `notification:default` for reminders.
 - `src-tauri/src/main.rs` calls `project_manager_lib::run()`. `src-tauri/src/lib.rs` registers the four plugins (`sql` with the six migrations, `dialog`, `fs`, `notification`) and no custom commands.
 - `src-tauri/Cargo.toml`: package `project-manager`, library `project_manager_lib`, Rust edition 2024. Dependencies: `tauri` 2, `serde`, `serde_json`, `tauri-plugin-sql` 2 (feature `sqlite`), `tauri-plugin-dialog` 2, `tauri-plugin-fs` 2, `tauri-plugin-notification` 2.
 - `package.json`: dependencies `react` and `react-dom` ^19.1.0, `react-router` ^7.18.4, `@tauri-apps/api` ^2, `@tauri-apps/plugin-sql` ^2.6.0, `@tauri-apps/plugin-dialog` ^2, `@tauri-apps/plugin-fs` ^2, `@tauri-apps/plugin-notification` ^2, `tailwindcss` and `@tailwindcss/vite` ^4.3.3, `@fontsource-variable/dm-sans` ^5.3.0. Dev dependencies: `vite` ^8.0.16, `@vitejs/plugin-react` ^6.0.2, `typescript` ~6.0.3, `@tauri-apps/cli` ^2, and React type packages.

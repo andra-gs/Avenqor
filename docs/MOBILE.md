@@ -80,7 +80,7 @@ Each step is small, tested by the developer, and recorded in [DEVELOPMENT_STATUS
 |---|---|---|
 | M0 | Set up the Android tools (above) and check them with a few commands | The tools are found; the phone is listed |
 | M1 | The spike: add the Android project to the repository and run the **unchanged** app on the phone | Record exactly what works and what breaks (database, plugins, layout) |
-| M2 | Separate desktop-only code: title bar, window permissions, window settings | Desktop still works exactly as before (the 1.0 behavior is the reference) |
+| M2 | Separate desktop-only code: title bar, window permissions, window settings | Desktop still works exactly as before (the 1.0 behavior is the reference). **Written 2026-11-02, not yet tested** (see below) |
 | M3 | Mobile layout: navigation, one-column pages, touch sizes | The main screens are usable on the phone |
 | M4 | Data features on the phone: backup export and import, reminders, search | Each one works with real data |
 | M5 | A signed Android package (APK) that can be installed without the USB cable | Installed and tested on the phone |
@@ -158,3 +158,11 @@ Next: build a package with the page bundled inside (no dev server): `npm run tau
 | 6 | Many cards do not adapt to the screen width | Cards must resize to the screen |
 
 These are the work of steps M2 (desktop-only code) and M3 (mobile layout). Items 2, 4, and 6 are probably caused by minimum widths in the layout; this is a guess until the layout code is read.
+
+**M2, desktop-only code (written 2026-11-02, branch `mobile-m2`; NOT yet tested).**
+
+- `src/lib/platform.ts` (new): `IS_ANDROID` (the web view's user agent contains "Android") and `HAS_DESKTOP_WINDOW`. Whether the Android web view really says "Android" is not verified until it runs on the phone.
+- `src/components/layout/AppShell.tsx`: the title bar is drawn only when `HAS_DESKTOP_WINDOW` is true. Because the title bar is not drawn on a phone, the window API (`src/lib/windowControls.ts`) is not called there.
+- `src-tauri/capabilities/`: the four window permissions moved from `default.json` to the new `desktop.json`, limited to Windows, macOS, and Linux. `default.json` keeps the rest (database, backup files, notifications).
+- Not changed yet: the window settings in `tauri.conf.json` (`decorations`, `minWidth`, `dragDropEnabled`). What they do on Android is still to verify.
+- Tests still to run: (1) desktop: `npm run build` and `npm run tauri dev`, the title bar and its buttons work as in 1.0; (2) phone: build and install the APK, the title bar is gone.
