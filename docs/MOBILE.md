@@ -126,3 +126,14 @@ Each test is recorded with the date and the command used. All results below were
 | Clean up | `git restore package-lock.json src-tauri/Cargo.lock` | `git status --short` showed only `?? src-tauri/gen/` |
 
 Next: repeat `android dev`, saving the full output to a file (`npm run tauri android dev 2>&1 | Tee-Object -FilePath android-dev.log`).
+
+**M1, second attempt (2026-11-02): the app installs and opens on the phone, but the screen stays white in dev mode.**
+
+- `npm run tauri android dev` built and installed the app (`Streamed Install: Success`, `MainActivity` started) on an Infinix X669C. Android System WebView 155 loaded. So the Rust and Android side works.
+- Opening `http://192.168.1.3:1420` in Chrome on the same phone works (the page took about 50 seconds to load: 176 requests, 6.9 MB). This shows the network and the Vite server are fine.
+- Inspecting the WebView (`chrome://inspect/#devices`, group "WebView in io.github.andra_gs.avenqor", page `http://tauri.localhost/`): several script requests fail after about 30 seconds with `net::ERR_CONNECTION_REFUSED` or status 500. `react-dom/client` and `react-router` failed in both runs; others differed between runs (`useTaskLabels.ts`, `@tauri-apps/plugin-notification`, `@tauri-apps/api/window`, `projectService.ts`, `database.ts`). Without `react-dom/client`, React cannot draw, which explains the white screen. The logcat line `custom protocol timed out: timed out waiting on channel` matches the 30 seconds.
+- The developer's terminal printed nothing about these failures. The real cause is **not known**. Working guess (unverified): in dev mode the app fetches about 170 separate files through Tauri's internal proxy, and on this phone some, mostly the large ones, time out.
+- A page reload did not change the result.
+- Separate finding: in a normal browser the window buttons (close, maximize) still appear and fail with `Cannot read properties of undefined (reading 'metadata')`. This is expected, because there is no Tauri window there, and it is part of M2 (desktop-only code).
+
+Next: build a package with the page bundled inside (no dev server): `npm run tauri android build -- --debug --apk --target aarch64` (options not yet verified for CLI 2.12.3), then install it with `adb`.
