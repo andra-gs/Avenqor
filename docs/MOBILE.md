@@ -137,3 +137,24 @@ Next: repeat `android dev`, saving the full output to a file (`npm run tauri and
 - Separate finding: in a normal browser the window buttons (close, maximize) still appear and fail with `Cannot read properties of undefined (reading 'metadata')`. This is expected, because there is no Tauri window there, and it is part of M2 (desktop-only code).
 
 Next: build a package with the page bundled inside (no dev server): `npm run tauri android build -- --debug --apk --target aarch64` (options not yet verified for CLI 2.12.3), then install it with `adb`.
+
+**M1, third attempt (2026-11-02): passed. The app runs on the phone.**
+
+- Command: `npm run tauri android build -- --debug --apk --target aarch64` (the options were accepted by CLI 2.12.3). Result: one APK, `src-tauri/gen/android/app/build/outputs/apk/universal/debug/app-universal-debug.apk`. It was installed on the phone with `adb install -r`.
+- With the page bundled inside the package (no dev server), the app opens and shows the Dashboard. So the white screen was a dev-mode problem, not an app problem.
+- **Database check (developer, on the phone):** created one workspace ("Test"), closed the app, opened it again: the workspace was still there. So the SQL plugin, the six migrations, and persistence work on Android (at least for this basic case).
+- Not tested yet on the phone: the dialog and fs plugins (backup export and import), notifications, task and project screens, drag and drop.
+- The phone screen is 720 x 1612 pixels in portrait. In **landscape the app looks normal**, so the problems below depend on the screen width: the layout assumes a desktop-sized window (minimum 960 x 600) and is squeezed into a narrow screen.
+
+**What the developer saw (portrait) and wants changed** (the list is Agreed as the developer's requests; the way to fix each is Proposed):
+
+| # | Observation | Wanted on mobile |
+|---|---|---|
+| 1 | The custom title bar (window title and buttons) appears | Not needed; hide it on mobile |
+| 2 | The search box does not shrink, so it pushes the profile out of the screen | The top bar must fit the width |
+| 3 | A closed sidebar still takes space (a narrow strip stays) | Hide it completely; keep the button that opens it |
+| 4 | On every page the content can be zoomed out, as if the page is wider than the screen | The page must fit the screen width (no sideways overflow) |
+| 5 | The "New Project" button on the Dashboard | Remove it on mobile |
+| 6 | Many cards do not adapt to the screen width | Cards must resize to the screen |
+
+These are the work of steps M2 (desktop-only code) and M3 (mobile layout). Items 2, 4, and 6 are probably caused by minimum widths in the layout; this is a guess until the layout code is read.
