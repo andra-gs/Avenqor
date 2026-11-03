@@ -105,23 +105,25 @@ export function TaskList({ tasks, onSetDone, onDelete, onUpdate }: TaskListProps
                     {due && <Badge tone={due.tone}>{due.label}</Badge>}
                     <PriorityBadge priority={task.priority} />
                     <StatusBadge status={task.status} />
-                    <ActionMenu
-                      label={`Actions for ${task.title}`}
-                      disabled={busy}
-                      items={[
-                        { label: "Edit", onSelect: () => setEditing(task) },
-                        { label: done ? "Reopen task" : "Mark done", onSelect: () => void run(() => onSetDone(task.id, !done)) },
-                        {
-                          label: "Delete",
-                          tone: "danger",
-                          onSelect: () => {
-                            setDeleting(task);
-                            setError(undefined);
-                          },
-                        },
-                      ]}
-                    />
                   </div>
+                }
+                actions={
+                  <ActionMenu
+                    label={`Actions for ${task.title}`}
+                    disabled={busy}
+                    items={[
+                      { label: "Edit", onSelect: () => setEditing(task) },
+                      { label: done ? "Reopen task" : "Mark done", onSelect: () => void run(() => onSetDone(task.id, !done)) },
+                      {
+                        label: "Delete",
+                        tone: "danger",
+                        onSelect: () => {
+                          setDeleting(task);
+                          setError(undefined);
+                        },
+                      },
+                    ]}
+                  />
                 }
               />
             );

@@ -193,3 +193,13 @@ Results of the first part: title bar gone, search box fits, no sidebar and the b
 | Edit buttons should be a pencil icon | `Button` has a new option `iconOnlyOnPhone`: on a phone only the pencil is shown (the text stays as the accessible name and tooltip). Used for Edit Workspace, Edit project, Edit task, and Edit document. **Desktop keeps the text.** Applying the pencil on desktop too is a design decision for the developer. The three-dots menu of each task row (Edit, Mark done, Delete) is unchanged |
 
 Still open: the phone's navigation bar should hide when idle (immersive mode). This needs a change in the generated Android file `MainActivity.kt` under `src-tauri/gen/android/`, which is not in Git yet and which Claude has not seen. Next: the developer shows that file, and decides whether `src-tauri/gen/` is committed (the generated `.gitignore` already leaves out local files). Pages not yet seen on the phone: Documents, Board, Task details, Settings, Menu.
+
+**M3, third part (written 2026-11-03, NOT yet tested): the developer's second round of findings (2026-11-03).**
+
+Result: the first fixes worked for most items; the desktop app has no problem. New findings and the changes written for them:
+
+| Problem | Change (Proposed fix, to verify) |
+|---|---|
+| Task rows: when deadline, priority, and status are long, the action button (three dots) wraps to the next line, and its menu opens empty | Likely cause (not proven): the menu opens to the left of its button, so a button that wraps to the left edge opens the menu off the screen. Now the button stays at the right end of the title line and the badges go under it (`ListRow` option `actions`, used in `TaskList.tsx`). On desktop the gap between the badges and the button grew by 4 px |
+| Edit and create windows, and the confirmation window, are too large | `Dialog.tsx`: on a phone smaller padding, a width of the screen minus 1.5 rem, and a maximum height of the screen with scrolling. From 768 px up the same as before (the height limit and scrolling are new there too). Not verified what exactly was too large; a photo of one window would settle it |
+| The phone's navigation bar should hide when idle | `MainActivity.kt` (generated Android file) changed so the navigation bar is hidden and appears again on a swipe from the edge. `src-tauri/gen/` is added to Git (Agreed by the developer, 2026-11-03), so this change is tracked |

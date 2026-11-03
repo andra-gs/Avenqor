@@ -9,6 +9,9 @@ interface ListRowProps {
   subtitle?: ReactNode;
   leading?: ReactNode;
   trailing?: ReactNode;
+  // A button or menu for the row. On a phone with `stackOnPhone` it stays at the right end of the title line,
+  // so a menu opened from it has room; on desktop it comes after `trailing`.
+  actions?: ReactNode;
   // A tinted row has a light background. Rows without it sit directly on their card.
   tinted?: boolean;
   // On a phone (below 768 px) the trailing part goes under the title, so a long title keeps its width.
@@ -16,17 +19,17 @@ interface ListRowProps {
 }
 
 // One row of a list: an optional leading element, a title with a subtitle, and an optional trailing element.
-export function ListRow({ title, titleTo, subtitle, leading, trailing, tinted = true, stackOnPhone = false }: ListRowProps) {
+export function ListRow({ title, titleTo, subtitle, leading, trailing, actions, tinted = true, stackOnPhone = false }: ListRowProps) {
   return (
     <div
       className={cx(
         "flex gap-3",
-        stackOnPhone ? "flex-col items-stretch gap-2 md:flex-row md:items-center md:gap-3" : "items-center",
+        stackOnPhone ? "flex-wrap items-center gap-x-3 gap-y-2 md:flex-nowrap" : "items-center",
         tinted && "rounded-control bg-surface-muted px-3.5 py-2.5",
       )}
     >
       {leading}
-      <div className="min-w-0 flex-1">
+      <div className={cx("min-w-0 flex-1", stackOnPhone && "order-1")}>
         <p className="truncate text-small font-semibold">
           {titleTo ? (
             <Link to={titleTo} className="rounded-control outline-offset-2 hover:text-accent focus-visible:outline-2 focus-visible:outline-accent">
@@ -38,7 +41,8 @@ export function ListRow({ title, titleTo, subtitle, leading, trailing, tinted = 
         </p>
         {subtitle && <div className="text-caption text-ink-muted">{subtitle}</div>}
       </div>
-      {trailing}
+      {trailing && stackOnPhone ? <div className="order-3 basis-full md:order-2 md:basis-auto">{trailing}</div> : trailing}
+      {actions && <div className={cx(stackOnPhone && "order-2 md:order-3")}>{actions}</div>}
     </div>
   );
 }
