@@ -93,7 +93,7 @@ export function TaskPage() {
               {due && <Badge tone={due.tone}>{due.label}</Badge>}
             </div>
           </div>
-          <Button variant="secondary" onClick={() => setEditOpen(true)}>
+          <Button variant="secondary" icon="pencil" iconOnlyOnPhone onClick={() => setEditOpen(true)}>
             Edit task
           </Button>
         </div>

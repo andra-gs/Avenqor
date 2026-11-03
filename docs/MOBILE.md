@@ -180,3 +180,16 @@ These are the work of steps M2 (desktop-only code) and M3 (mobile layout). Items
 Also: `index.html` has `viewport-fit=cover`; the top bar and bottom bar use `env(safe-area-inset-*)` so they stay clear of the phone's status bar and navigation bar. In the M1 photo the status bar covered the title; **whether `env(safe-area-inset-*)` works in this Android web view is not verified.** The search box no longer shows "Ctrl+K" on Android (`HAS_KEYBOARD_SHORTCUTS` in `src/lib/platform.ts`). A new token `--layout-bottomnav-height` is in `tokens.css`.
 
 Tests still to run: (1) desktop: `npm run build`, then `npm run tauri dev`: every screen looks exactly as in 1.0 (title bar, sidebar, top bar, Dashboard with the New Project button, Workspace page); (2) phone: build, install, check the six observations.
+
+**M3, first part: results (developer, 2026-11-03, phone) and the second part (written 2026-11-03, NOT yet tested).**
+
+Results of the first part: title bar gone, search box fits, no sidebar and the bottom navigation works, pages cannot be zoomed out sideways, no "New Project" button, cards fit, the title is not covered by the status bar (so `env(safe-area-inset-top)` works in this web view). Problems found, and the changes written for them:
+
+| Problem | Change (Proposed fix, to verify) |
+|---|---|
+| Bottom navigation icons sit too high and the labels are hidden behind the phone's own navigation bar | The bar had a fixed height and its bottom padding (the phone's navigation bar height) was taken out of that height. Now the fixed-height row sits inside a box that carries the padding (`BottomNav.tsx`) |
+| The page can be zoomed in | `maximum-scale=1.0, user-scalable=no` in `index.html`. Trade-off: people who need to enlarge the page cannot. The developer asked for it |
+| Task rows: the title is not visible (deadline, priority, status, and the action button take the whole row; the action button also sticks out of the card) | `ListRow` has a new option `stackOnPhone`: below 768 px the badges go under the title and may wrap. Used in the project task list and the My Tasks list. From 768 px up nothing changes |
+| Edit buttons should be a pencil icon | `Button` has a new option `iconOnlyOnPhone`: on a phone only the pencil is shown (the text stays as the accessible name and tooltip). Used for Edit Workspace, Edit project, Edit task, and Edit document. **Desktop keeps the text.** Applying the pencil on desktop too is a design decision for the developer. The three-dots menu of each task row (Edit, Mark done, Delete) is unchanged |
+
+Still open: the phone's navigation bar should hide when idle (immersive mode). This needs a change in the generated Android file `MainActivity.kt` under `src-tauri/gen/android/`, which is not in Git yet and which Claude has not seen. Next: the developer shows that file, and decides whether `src-tauri/gen/` is committed (the generated `.gitignore` already leaves out local files). Pages not yet seen on the phone: Documents, Board, Task details, Settings, Menu.

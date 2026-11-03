@@ -60,7 +60,7 @@ export function DocumentView({ documentId }: { documentId: string }) {
             </p>
           </div>
           <div className="flex shrink-0 gap-2">
-            <Button variant="secondary" onClick={() => setEditOpen(true)}>
+            <Button variant="secondary" icon="pencil" iconOnlyOnPhone onClick={() => setEditOpen(true)}>
               Edit
             </Button>
             <Button

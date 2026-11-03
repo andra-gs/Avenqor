@@ -32,7 +32,7 @@ export function WorkspacePage() {
       <div className="flex items-center justify-between gap-4">
         <h2 className="text-title font-bold">Workspace Overview</h2>
         {/* Renaming is in Settings for now, so this button stays disabled. */}
-        <Button variant="secondary" disabled title="Rename workspaces in Settings">
+        <Button variant="secondary" icon="pencil" iconOnlyOnPhone disabled title="Rename workspaces in Settings">
           Edit Workspace
         </Button>
       </div>
