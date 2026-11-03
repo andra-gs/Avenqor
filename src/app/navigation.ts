@@ -155,7 +155,7 @@ interface HeadingContext {
 
 // Title and subtitle shown in the top bar for the current address.
 export function getPageHeading(pathname: string, context: HeadingContext): { title: string; subtitle: string } {
-  const item = [...MAIN_NAV, ...FOOTER_NAV].find((navItem) => navItem.path === pathname);
+  const item = [...MAIN_NAV, ...FOOTER_NAV, MENU_NAV].find((navItem) => navItem.path === pathname);
   if (item) {
     return { title: item.label, subtitle: item.subtitle };
   }
