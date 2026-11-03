@@ -82,7 +82,7 @@ Each step is small, tested by the developer, and recorded in [DEVELOPMENT_STATUS
 | M1 | The spike: add the Android project to the repository and run the **unchanged** app on the phone | Record exactly what works and what breaks (database, plugins, layout) |
 | M2 | Separate desktop-only code: title bar, window permissions, window settings | Desktop still works exactly as before (the 1.0 behavior is the reference). **Passed 2026-11-02** (see below) |
 | M3 | Mobile layout: navigation, one-column pages, touch sizes | The main screens are usable on the phone. **First part written 2026-11-03, not yet tested** (see below) |
-| M4 | Data features on the phone: backup export and import, reminders, search | Each one works with real data |
+| M4 | Data features on the phone: backup export and import, reminders, search | Each one works with real data. **Passed 2026-11-03** (reported by the developer, see below) |
 | M5 | A signed Android package (APK) that can be installed without the USB cable | Installed and tested on the phone |
 | M6 | Release (for example as a GitHub Release, like 1.0) | Download and install work |
 
@@ -212,3 +212,7 @@ Result: the first fixes worked for most items; the desktop app has no problem. N
 - Small wording left for later: on the phone some texts still say "this computer" ("Stored on this computer only") and name the "Edit task" button, which is only a pencil there.
 
 **M3, Board page (photo seen 2026-11-03; fix written, NOT yet tested).** The Board works on the phone: the columns scroll sideways (the next column peeks in), each card has its arrow buttons to move it, and the tasks are readable. Problem: the project name wrapped onto two lines because the "Project overview" and "New Task" buttons took the space. Change: on a phone the title has its own line and the two buttons sit under it (`BoardPage.tsx`); from 768 px up the same as before. Dragging a card by touch was not tried. The photos sent for this round showed the Menu title as "Page not found" again, so they were probably taken before the fixed build was installed; the fix still needs a re-test.
+
+**M4, data features on the phone (developer, 2026-11-03): passed, as reported.** The developer tested on the phone, with the debug APK, and reported that backup export works, backup import works, the reminders work, and search works. The report gives no further detail (for example where the exported file is saved, whether a notification permission question appeared, or whether a full restore that replaces data was run), so those points are not recorded as verified. The earlier worry (Android file addresses and the file permissions written for Windows) did not cause a visible problem in these tests.
+
+Also confirmed by the developer on 2026-11-03: the Menu page shows its title "Menu". Still to re-test: the Board header fix (commit b2c281d); a touch drag of board cards; the Workspace, Project, and Calendar pages and the lower part of Settings on the phone.
