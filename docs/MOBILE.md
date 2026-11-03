@@ -83,7 +83,7 @@ Each step is small, tested by the developer, and recorded in [DEVELOPMENT_STATUS
 | M2 | Separate desktop-only code: title bar, window permissions, window settings | Desktop still works exactly as before (the 1.0 behavior is the reference). **Passed 2026-11-02** (see below) |
 | M3 | Mobile layout: navigation, one-column pages, touch sizes | The main screens are usable on the phone. **First part written 2026-11-03, not yet tested** (see below) |
 | M4 | Data features on the phone: backup export and import, reminders, search | Each one works with real data. **Passed 2026-11-03** (reported by the developer, see below) |
-| M5 | A signed Android package (APK) that can be installed without the USB cable | Installed and tested on the phone |
+| M5 | A signed Android package (APK) that can be installed without the USB cable | Installed and tested on the phone. **Gradle signing change written 2026-11-03, not yet tested** (see below) |
 | M6 | Release (for example as a GitHub Release, like 1.0) | Download and install work |
 
 The desktop release stays the source of truth: every change for mobile must keep the Windows app working, which is verified with `npm run build` and a run of the desktop app before each commit.
@@ -216,3 +216,13 @@ Result: the first fixes worked for most items; the desktop app has no problem. N
 **M4, data features on the phone (developer, 2026-11-03): passed, as reported.** The developer tested on the phone, with the debug APK, and reported that backup export works, backup import works, the reminders work, and search works. The report gives no further detail (for example where the exported file is saved, whether a notification permission question appeared, or whether a full restore that replaces data was run), so those points are not recorded as verified. The earlier worry (Android file addresses and the file permissions written for Windows) did not cause a visible problem in these tests.
 
 Also confirmed by the developer on 2026-11-03: the Menu page shows its title "Menu". Still to re-test: the Board header fix (commit b2c281d); a touch drag of board cards; the Workspace, Project, and Calendar pages and the lower part of Settings on the phone.
+
+**M5, signed release package (written 2026-11-03, branch `mobile-m5`; NOT yet tested).**
+
+Source: <https://v2.tauri.app/distribute/sign/android/> (read 2026-11-03). The page gives the `keytool` command, the file `src-tauri/gen/android/keystore.properties` (keys `password`, `keyAlias`, `storeFile`), and a `signingConfigs` block for `app/build.gradle.kts`. It says to keep the key store and `keystore.properties` private and out of public source control. The page does not give the APK build command.
+
+- **What the signing key means (important):** Android only installs an update over an installed app when both are signed with the **same key**. Whoever holds this key decides who can update Avenqor. If the key is lost, nobody can update an installed copy; they must uninstall (and lose the local data unless they made a backup) and install a new app. So the key file and its password must be backed up in at least two places and must never be committed.
+- **Change in `src-tauri/gen/android/app/build.gradle.kts`:** the signing configuration from the Tauri page, with one difference: it is only created when `keystore.properties` exists. The page's version would stop every build, debug included, on a computer without the file. Without the file a release build is not signed (and cannot be installed). Whether this works with the Android Gradle plugin version used here (9.x, with the older settings Tauri writes) is not verified.
+- **Where the key lives (Proposed):** the `.jks` file outside the repository (for example `D:\Avenqor-keys\avenqor-release.jks`), plus `src-tauri/gen/android/keystore.properties` (already ignored by Git) with the password. In `storeFile` use forward slashes (`D:/Avenqor-keys/...`), because a backslash is an escape character in properties files.
+- **Build command (Proposed, not verified):** `npm run tauri android build -- --apk --target aarch64` (release is the default; the earlier command had `--debug`). Tauri prints the path of the APK.
+- Open: which phone processors the release APK supports (only `aarch64`, which covers most phones made in recent years, or also older 32-bit `armv7`), and the version number of the first mobile release.
