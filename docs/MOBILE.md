@@ -83,8 +83,8 @@ Each step is small, tested by the developer, and recorded in [DEVELOPMENT_STATUS
 | M2 | Separate desktop-only code: title bar, window permissions, window settings | Desktop still works exactly as before (the 1.0 behavior is the reference). **Passed 2026-11-02** (see below) |
 | M3 | Mobile layout: navigation, one-column pages, touch sizes | The main screens are usable on the phone. **First part written 2026-11-03, not yet tested** (see below) |
 | M4 | Data features on the phone: backup export and import, reminders, search | Each one works with real data. **Passed 2026-11-03** (reported by the developer, see below) |
-| M5 | A signed Android package (APK) that can be installed without the USB cable | Installed and tested on the phone. **Gradle signing change written 2026-11-03, not yet tested** (see below) |
-| M6 | Release (for example as a GitHub Release, like 1.0) | Download and install work |
+| M5 | A signed Android package (APK) that can be installed without the USB cable | Installed and tested on the phone. **Passed 2026-11-04** (signed APK installed; launcher icon changed; status-bar notification icon still unchanged, see below) |
+| M6 | Release 1.1.0 as a GitHub Release with two files (Windows installer and Android APK) | **Prepared 2026-11-04 on the branch `release-1.1.0`** (version 1.1.0, README Download section). Download and install of the published files not yet tested |
 
 The desktop release stays the source of truth: every change for mobile must keep the Windows app working, which is verified with `npm run build` and a run of the desktop app before each commit.
 
@@ -235,3 +235,11 @@ Source: <https://v2.tauri.app/distribute/sign/android/> (read 2026-11-03). The p
 - Problem found by the developer: the app icon (and the icon in the notification) was the Tauri default. Cause: the generated Android project (`src-tauri/gen/android/app/src/main/res/`) still had Tauri's template icons; `src-tauri/icons/` has no `android` folder.
 - Change written: `ic_launcher.png`, `ic_launcher_round.png`, and `ic_launcher_foreground.png` in the five `mipmap-*` folders were redone from `src-tauri/icons/icon.png` (the indigo "A"). The notification's small icon was added as `drawable-*/ic_stat_avenqor.png`: a white "A" on a transparent background, because Android draws the small status-bar icon as a one-colour shape. `src/lib/notifications.ts` passes `icon: "ic_stat_avenqor"` on Android only (the plugin's `icon` option names a file in `res/drawable`, per the plugin documentation read 2026-11-04); desktop notifications are unchanged. No adaptive-icon file (`mipmap-anydpi-v26`) was added; how a new phone shapes the plain icon is to check.
 - To verify on the phone: the home-screen icon, the icon in the app list, and the notification's icon (a white "A" in the status bar; in the notification card Android may tint it).
+
+## M6: release 1.1.0 (prepared 2026-11-04)
+
+- **Agreed 2026-11-04:** the release APK is for `aarch64` only (64-bit ARM), and the mobile app uses the same version number as the desktop app, so one release `1.1.0` carries both files.
+- **Written on the branch `release-1.1.0`:** version 1.1.0 in `package.json`, `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml`, `src-tauri/Cargo.lock`, and `package-lock.json`; the README (badges, Download section split into Windows and Android, phone layout, Android build pointer, limitations, repository URL `andra-gs/Avenqor`).
+- **Known limitations to state in the release notes:** the status-bar notification icon did not change (cause not found); dragging a board card by touch was not tried (the arrow buttons work); tested on one phone only (Infinix X669C); `android dev` mode is not usable on that phone; not in the Play Store; iOS not supported.
+- **Release steps (developer):** pull the branch; `npm run build`; `npm run tauri build` (Windows installer); `npm run tauri android build -- --apk --target aarch64` (signed APK, needs `keystore.properties`); copy the APK to a clear name such as `Avenqor_1.1.0_android-arm64.apk`; compute SHA-256 of both files (`Get-FileHash`); pull request to `main`; GitHub Release `1.1.0` (tag without `v`) with both files and the checksums.
+- **Not yet verified:** the published files installing from a download; an update installed over a previous Android install keeping the data.
