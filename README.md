@@ -10,6 +10,7 @@ Organize workspaces, projects, tasks, deadlines, and documents in one place, on 
 
 ![Version](https://img.shields.io/badge/version-1.1.0-4a3de0)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-0078D6)
+![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 ![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB)
 ![React](https://img.shields.io/badge/React-19-61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6)
@@ -33,6 +34,7 @@ Organize workspaces, projects, tasks, deadlines, and documents in one place, on 
 - [Getting started](#getting-started)
 - [Roadmap](#roadmap)
 - [Documentation](#documentation)
+- [License](#license)
 
 ## Download
 
@@ -290,4 +292,10 @@ Known limitations today: no subtasks, no templates, reminders only while the app
 
 ## About
 
-Avenqor is built by [Andra](https://github.com/andra-gs) as a learning project, together with Claude (Anthropic) as an AI development partner. The developer reports that no registration of the name Avenqor was found in Indonesia or internationally (stated 2026-11-01; not checked by Claude, and not legal advice). No license has been chosen yet, so all rights are reserved until one is added.
+Avenqor is built by [Andra](https://github.com/andra-gs) as a learning project, together with Claude (Anthropic) as an AI development partner. The developer reports that no registration of the name Avenqor was found in Indonesia or internationally (stated 2026-11-01; not checked by Claude, and not legal advice).
+
+## License
+
+Avenqor is released under the **[Apache License 2.0](LICENSE)** (chosen by the developer on 2026-11-04). In plain words, and not legal advice: anyone may use, copy, modify, and share Avenqor, including in their own or commercial projects, **as long as they give credit**. Concretely, you must keep the [LICENSE](LICENSE) text and the copyright and attribution notices in the [NOTICE](NOTICE) file with every copy or derived work, and you must mark files you changed. The license does not give anyone the right to use the name "Avenqor" or its logo as the name of their own product. The software is provided "as is", without warranty.
+
+Avenqor uses open-source libraries (for example Tauri, React, and the DM Sans font), each under its own license. Copies of Avenqor published before this date (versions 1.0.0 and 1.1.0) were released before the license was added; the license applies to the code in this repository from now on.

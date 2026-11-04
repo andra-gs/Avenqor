@@ -83,6 +83,10 @@ Search and filters (search box in the top bar and task filters on the project pa
 
 Real-time cross-device sync, cloud accounts and authentication, online chat and live presence, full multi-user collaboration, AI assistant integration, complex enterprise permissions, large-scale analytics, and anything requiring paid infrastructure.
 
+## License (Agreed 2026-11-04)
+
+The developer chose the **Apache License 2.0** with the copyright holder "Andra (andra-gs)". Reason (the developer's words, in short): anyone may use and modify the application, but credit is required. Options explained beforehand: MIT (shorter, no patent clause) and Apache-2.0 (adds a patent grant and the NOTICE file for credit); CC BY was not suitable for software. Files: `LICENSE` (the unmodified Apache-2.0 text) and `NOTICE` (the attribution to keep). The license fields in `package.json` and `Cargo.toml` say `Apache-2.0`. Not legal advice; the name and logo are not licensed (Apache-2.0 section 6), which is stated in the README. The releases 1.0.0 and 1.1.0 were published before the license existed.
+
 ## Future roadmap (Future)
 
 | Phase | Goal |
