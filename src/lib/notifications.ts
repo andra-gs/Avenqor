@@ -1,4 +1,5 @@
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
+import { IS_ANDROID } from "./platform";
 
 // The only place that talks to the Windows notification system (the Tauri notification plugin).
 // Windows shows notifications only for an installed app: in `npm run tauri dev` they carry the name and
@@ -13,6 +14,7 @@ export async function ensureNotificationPermission(): Promise<boolean> {
 // Shows a notification. Returns false when the permission is missing, so the caller can say so.
 export async function showNotification(title: string, body: string): Promise<boolean> {
   if (!(await ensureNotificationPermission())) return false;
-  sendNotification({ title, body });
+  // On Android the small icon in the status bar must be a white silhouette stored in the app (res/drawable).
+  sendNotification(IS_ANDROID ? { title, body, icon: "ic_stat_avenqor" } : { title, body });
   return true;
 }
