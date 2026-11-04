@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { documentPath, projectPath, taskPath, workspacePath } from "../../app/navigation";
 import { Icon } from "../../components/icons/Icon";
 import { cx } from "../../lib/classNames";
+import { HAS_KEYBOARD_SHORTCUTS } from "../../lib/platform";
 import { SEARCH_MAX_LENGTH, SEARCH_MIN_LENGTH } from "../../services/searchService";
 import { useSearch } from "../../hooks/useSearch";
 import type { SearchResults } from "../../types/search";
@@ -116,7 +117,7 @@ export function SearchBox() {
   else if (lines.length === 0) note = searching ? "Searching…" : `No results for “${text.trim()}”.`;
 
   return (
-    <div ref={rootRef} className="relative w-72">
+    <div ref={rootRef} className="relative order-last w-full md:order-none md:w-72">
       <Icon name="search" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-muted" />
       <input
         ref={inputRef}
@@ -128,7 +129,7 @@ export function SearchBox() {
         aria-expanded={showPanel}
         aria-controls={showPanel ? listId : undefined}
         aria-activedescendant={showPanel && lines[active] ? `${listId}-${lines[active].key}` : undefined}
-        placeholder="Search…  Ctrl+K"
+        placeholder={HAS_KEYBOARD_SHORTCUTS ? "Search…  Ctrl+K" : "Search…"}
         maxLength={SEARCH_MAX_LENGTH}
         // Without this the Windows web view offers its "Saved info" list while typing.
         autoComplete="off"
@@ -148,7 +149,7 @@ export function SearchBox() {
           aria-label="Search results"
           // Keeps the focus in the box while the mouse is used on the list.
           onMouseDown={(event) => event.preventDefault()}
-          className="absolute right-0 z-20 mt-1 max-h-96 w-112 overflow-y-auto rounded-control border border-border bg-surface p-1"
+          className="absolute right-0 z-20 mt-1 max-h-96 w-full overflow-y-auto md:w-112 rounded-control border border-border bg-surface p-1"
         >
           {note && <p className={cx("px-3 py-2 text-body", error ? "text-danger" : "text-ink-muted")}>{note}</p>}
           {lines.map((line, index) => (

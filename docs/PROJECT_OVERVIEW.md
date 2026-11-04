@@ -91,11 +91,13 @@ Real-time cross-device sync, cloud accounts and authentication, online chat and 
 | 6 | **Online architecture**: authentication, backend API, cloud database, synchronization, conflict handling, offline-to-online data migration, shared workspaces. |
 | 7 | **Platform expansion and AI**: evaluate web, Android, and iOS options; add AI-assisted features only when justified. |
 
-Tauri does not automatically produce a complete mobile application. Mobile options will be evaluated when that phase begins.
+Tauri does not automatically produce a complete mobile application. The Android version was chosen after 1.0 and is planned in [MOBILE.md](MOBILE.md); iOS is later and needs a Mac.
 
 ## Version 1.0 and the plans after it (Future; details Agreed 2026-10-30)
 
-**Order of work (Agreed 2026-10-30).** First finish the application up to release **1.0**. Only after 1.0 does the developer decide whether to build the mobile version first or to update Documents and the Whiteboard. Nothing in the two sections below is built before then, and the details may still change when that work starts.
+**Order of work (Agreed 2026-10-30; decided 2026-11-01).** Release 1.0 is published. The developer chose the **mobile version first** (Android, Tauri 2 mobile, in the same repository; see [MOBILE.md](MOBILE.md)). The Documents and Whiteboard update comes after it. Nothing in the two sections below is built yet, and the details may still change when that work starts.
+
+**Scope of 1.1 (Agreed 2026-11-04):** the Android version (64-bit ARM APK, signed, outside the Play Store) in the same release as the unchanged Windows program, with one shared version number. Status: prepared on the branch `release-1.1.0` (2026-11-04); not Implemented as a release until the files are built, published, and installed from the download. Details and test results: [MOBILE.md](MOBILE.md).
 
 **Scope of 1.0 (Agreed 2026-10-30):** Phase 4 complete (backup and restore, search and filters, validation review, local notifications); drag and drop on the Kanban board (step 3b); release preparation (a tested installer, the database folder stays in Roaming (decided 2026-11-01), the name Avenqor (the developer reports no registration was found in Indonesia or internationally, 2026-11-01, not checked by Claude), version 1.0.0, customizing the installer and uninstaller). **Not in 1.0:** GitHub integration (Phase 5) and online features (Phase 6).
 

@@ -98,29 +98,32 @@ export function TaskList({ tasks, onSetDone, onDelete, onUpdate }: TaskListProps
                 key={task.id}
                 title={task.title}
                 titleTo={taskPath(task.id)}
+                stackOnPhone
                 subtitle={task.labels.length > 0 ? <div className="mt-1 flex flex-wrap gap-1.5"><LabelBadges labels={task.labels} /></div> : undefined}
                 trailing={
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {due && <Badge tone={due.tone}>{due.label}</Badge>}
                     <PriorityBadge priority={task.priority} />
                     <StatusBadge status={task.status} />
-                    <ActionMenu
-                      label={`Actions for ${task.title}`}
-                      disabled={busy}
-                      items={[
-                        { label: "Edit", onSelect: () => setEditing(task) },
-                        { label: done ? "Reopen task" : "Mark done", onSelect: () => void run(() => onSetDone(task.id, !done)) },
-                        {
-                          label: "Delete",
-                          tone: "danger",
-                          onSelect: () => {
-                            setDeleting(task);
-                            setError(undefined);
-                          },
-                        },
-                      ]}
-                    />
                   </div>
+                }
+                actions={
+                  <ActionMenu
+                    label={`Actions for ${task.title}`}
+                    disabled={busy}
+                    items={[
+                      { label: "Edit", onSelect: () => setEditing(task) },
+                      { label: done ? "Reopen task" : "Mark done", onSelect: () => void run(() => onSetDone(task.id, !done)) },
+                      {
+                        label: "Delete",
+                        tone: "danger",
+                        onSelect: () => {
+                          setDeleting(task);
+                          setError(undefined);
+                        },
+                      },
+                    ]}
+                  />
                 }
               />
             );

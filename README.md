@@ -5,11 +5,11 @@
 <img src="Avenqor-logo.png" alt="Avenqor icon" width="200" height="200">
 </br>
 
-**A local-first project manager for Windows.**
-Organize workspaces, projects, tasks, deadlines, and documents in one place, on your own computer, with no account and no internet.
+**A local-first project manager for Windows and Android.**
+Organize workspaces, projects, tasks, deadlines, and documents in one place, on your own computer or phone, with no account and no internet.
 
-![Version](https://img.shields.io/badge/version-1.0.0-4a3de0)
-![Platform](https://img.shields.io/badge/platform-Windows-0078D6)
+![Version](https://img.shields.io/badge/version-1.1.0-4a3de0)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-0078D6)
 ![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB)
 ![React](https://img.shields.io/badge/React-19-61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6)
@@ -21,7 +21,7 @@ Organize workspaces, projects, tasks, deadlines, and documents in one place, on 
   <img src="docs/screenshots/dashboard.png" alt="Avenqor Dashboard" width="860">
 </p>
 
-> **Version 1.0.0** is the first release. Every feature below has been tested by the developer on Windows 10, in development mode and in the installed program; see [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) for the dated test log. Avenqor is a one-person project, so expect rough edges and please report them as [issues](https://github.com/andra-gs/project-manager/issues).
+> **Version 1.1.0** adds the **Android version** to the Windows program of version 1.0.0. The Windows features below were tested by the developer on Windows 10; the Android version was tested by the developer on one Android phone (see [docs/MOBILE.md](docs/MOBILE.md)). The dated test logs are in [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) and [docs/MOBILE.md](docs/MOBILE.md). Avenqor is a one-person project, so expect rough edges and please report them as [issues](https://github.com/andra-gs/Avenqor/issues).
 
 ## Contents
 
@@ -36,13 +36,28 @@ Organize workspaces, projects, tasks, deadlines, and documents in one place, on 
 
 ## Download
 
-**[Download the latest Windows installer](https://github.com/andra-gs/project-manager/releases/latest)** (file named like `Avenqor_1.0.0_x64-setup.exe`, found under "Assets" on the release page).
+All downloads are on the **[latest release page](https://github.com/andra-gs/Avenqor/releases/latest)**, under "Assets". Both files are **not** code-signed by a company (a certificate costs money), so Windows and Android show a warning; the steps below explain it. Each release page lists the SHA-256 checksum of every file.
+
+### Windows
+
+File named like `Avenqor_1.1.0_x64-setup.exe`.
 
 1. Run the downloaded file. It installs Avenqor for your Windows user only, so no administrator password is needed.
-2. Windows may show **"Windows protected your PC"** (SmartScreen). The installer is not code-signed yet, because a certificate costs money. Click **More info**, then **Run anyway**. You can compare the file's SHA-256 checksum, given on the release page, with the result of `Get-FileHash .\Avenqor_1.0.0_x64-setup.exe` in PowerShell.
+2. Windows may show **"Windows protected your PC"** (SmartScreen). Click **More info**, then **Run anyway**. You can compare the file's SHA-256 checksum, given on the release page, with the result of `Get-FileHash .\Avenqor_1.1.0_x64-setup.exe` in PowerShell.
 3. Start Avenqor from the Start menu. Your data is saved on your computer (see [Your data stays with you](#your-data-stays-with-you)).
 
 Requirements: Windows 10 (version 1803 or later) or Windows 11, 64-bit. **Uninstalling** keeps your data unless you tick the option to delete the application data. To move to another computer, use **Settings, Backup and restore**.
+
+### Android
+
+File named like `Avenqor_1.1.0_android-arm64.apk`. It is not in the Google Play Store.
+
+1. Download the file on the phone, or copy it there from a computer.
+2. Open it. Android asks you to allow installing apps from this source (the browser or the file manager you used): allow it. This setting is "Install unknown apps" in the phone's settings.
+3. Android or Google Play Protect may warn that the app is from an unknown developer. This is expected for an app outside the Play Store. Choose to install anyway.
+4. Open Avenqor. The data stays on the phone, in the app's private storage.
+
+Requirements: Android 7.0 or newer, on a phone with a 64-bit ARM processor (most phones made in recent years). The Android version was tested by the developer on one phone only, so other phones may behave differently. **Updating:** install a newer APK over the old one; your data stays (the file is always signed with the same key). **Uninstalling the app deletes its data**, so export a backup first (Settings, Data). **Phone and computer do not share data**: there is no synchronization. To move your work between them, export a backup on one and restore it on the other.
 
 ## What is Avenqor?
 
@@ -124,12 +139,13 @@ Export all your data to one readable JSON file, and restore it later. A restore 
 
 ### Interface
 
-Clean light theme, DM Sans font, indigo accent (one accent color for every progress bar), a collapsible sidebar, and a custom title bar that shows where you are (for example *Workspace / Project / Board*). The window works down to 960x600.
+Clean light theme, DM Sans font, indigo accent (one accent color for every progress bar), a collapsible sidebar, and a custom title bar that shows where you are (for example *Workspace / Project / Board*). The window works down to 960x600. On a phone (a screen narrower than 768 px) the sidebar is replaced by a bottom navigation bar with a Menu page, the top bar has two rows, and lists and forms fit the screen width.
 
 ## Your data stays with you
 
 - All data is stored in one SQLite file, `avenqor.db`, in `%APPDATA%\io.github.andra-gs.avenqor` on Windows. It is **not** in the installation folder, so uninstalling or updating the program does not touch it.
 - Avenqor makes no network requests for its features. (The first *build* from source downloads packaging tools; running the app does not.)
+- On Android the database lives in the app's private storage on the phone. Data on the phone and on a computer is separate: nothing is synchronized.
 - A backup file contains your workspaces, projects, tasks, checklists, notes, labels, documents, and activity history. It does not contain program settings, because there are none yet, and it is not encrypted: store it somewhere you trust.
 
 ## For programmers
@@ -207,7 +223,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ### Run in development
 
 ```powershell
-git clone https://github.com/andra-gs/project-manager.git
+git clone https://github.com/andra-gs/Avenqor.git
 cd project-manager
 npm install
 npm run tauri dev
@@ -222,6 +238,16 @@ npm run tauri build
 ```
 
 The first build took about 34 minutes and downloads the WiX and NSIS packaging tools from GitHub. Output is in `src-tauri\target\release\`: the program `project-manager.exe`, an MSI installer in `bundle\msi\`, and an NSIS installer in `bundle\nsis\`. The NSIS installer (`-setup.exe`) was installed, tested, and uninstalled on the developer's computer (reported 2026-11-01); the MSI installer was not tested.
+
+### Build the Android app
+
+Android needs extra tools (Android Studio, the Android SDK and NDK, Java, and four Rust targets) and a signing key for release builds. The full steps, with the commands, are in [docs/MOBILE.md](docs/MOBILE.md). In short, after the setup:
+
+```powershell
+npm run tauri android build -- --apk --target aarch64
+```
+
+This builds a release APK; without a signing key (`keystore.properties`, which is never committed) the file is named `...-unsigned.apk` and cannot be installed. Use the debug build (`--debug`) with a USB cable for testing. Do not use `npm run tauri android dev`: on the developer's phone it showed a white screen (see MOBILE.md).
 
 ### Useful commands
 
@@ -244,11 +270,11 @@ There is no automated test suite yet. Features are tested by hand and the result
 | 4 | Backup and restore, search and filters, validation review, local notifications | Done |
 | 5 | GitHub integration | Future |
 | 6 | Online accounts, sync, shared workspaces | Future |
-| 7 | Web, Android, iOS, and AI assistance | Future |
+| 7 | Web, iOS, and AI assistance (Android came earlier, as version 1.1) | Future |
 
-**Version 1.0** is Phase 4 plus release preparation, and it is done. The next step is the developer's choice between a mobile version and a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases.
+**Version 1.0** (Windows) is Phase 4 plus release preparation. **Version 1.1** adds the Android version (same code base, recorded in [docs/MOBILE.md](docs/MOBILE.md)). After that, a bigger update: documents as files and folders, and a whiteboard for each workspace (details in [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)). GitHub and online features are later phases.
 
-Known limitations today: no subtasks, no templates, reminders only while the app is open, and single-user only. The database folder is in Roaming (see Known issues in the status file).
+Known limitations today: no subtasks, no templates, reminders only while the app is open, and single-user only. The database folder on Windows is in Roaming (see Known issues in the status file). On Android: the icon in the status bar for notifications may still show the old icon, dragging a board card by touch was not tried (use the arrow buttons), and iOS is not supported.
 
 ## Documentation
 
@@ -259,6 +285,7 @@ Known limitations today: no subtasks, no templates, reminders only while the app
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the application is structured, and why |
 | [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md) | SQLite tables and migrations |
 | [docs/DEVELOPMENT_STATUS.md](docs/DEVELOPMENT_STATUS.md) | What is done, tested, broken, and next |
+| [docs/MOBILE.md](docs/MOBILE.md) | The Android version: decisions, setup, plan |
 | [docs/BRAND.md](docs/BRAND.md) | Brand identity notes (in Indonesian) |
 
 ## About

@@ -46,8 +46,8 @@ export function BoardPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-4">
-        <div className="min-w-0">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 md:flex-nowrap">
+        <div className="min-w-0 basis-full md:basis-auto">
           <h2 className="text-title font-bold break-words">{project.name}</h2>
           <p className="text-caption text-ink-muted">
             {pluralize(project.taskCount, "task")} · {project.progressPercent}% complete

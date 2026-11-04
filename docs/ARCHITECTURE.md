@@ -121,7 +121,7 @@ Online features are **Future** (Phase 6). Nothing here is built, and `CLAUDE.md`
 
 ## Actual implementation
 
-Branch `main` (version 1.0.0; the earlier branches `phase-1-ui` and `phase-3-kanban` were merged into it). Verified from the developer's test results and from the tracked files. The project began as the `create-tauri-app` template (`react-ts`), renamed to `project-manager`, with the demo code removed. The application now has the app frame with a custom title bar, and working workspaces, projects, tasks (with checklists, notes, and labels), a Kanban board with drag and drop, a Calendar, My Tasks, project documents, local activity history, and backup and restore, all on a local SQLite database.
+Branch `main` (version 1.0.0; release 1.1.0 is prepared on `release-1.1.0`; the earlier branches `phase-1-ui` and `phase-3-kanban` were merged into it). Verified from the developer's test results and from the tracked files. The project began as the `create-tauri-app` template (`react-ts`), renamed to `project-manager`, with the demo code removed. The application now has the app frame with a custom title bar, and working workspaces, projects, tasks (with checklists, notes, and labels), a Kanban board with drag and drop, a Calendar, My Tasks, project documents, local activity history, and backup and restore, all on a local SQLite database.
 
 ### Folder layout (tracked files)
 
@@ -148,7 +148,7 @@ src/
   types/           activity, backup, calendar, dashboard, document, label, myTasks, profile, project, search, task, taskExtras, workspace
 src-tauri/
   Cargo.toml, Cargo.lock, build.rs, tauri.conf.json
-  capabilities/    default.json
+  capabilities/    default.json, desktop.json
   icons/           application icons
   migrations/      0001 to 0006 (SQL files, registered in lib.rs)
   src/             main.rs, lib.rs
@@ -184,9 +184,9 @@ Verified: in `npm run tauri dev` the components render, hover and keyboard focus
 
 ### How the pieces are wired (from the configuration files)
 
-- `src-tauri/tauri.conf.json`: product name `Avenqor`, version `1.0.0` (set 2026-11-01; the installer built from it was tested by the developer the same day), identifier `io.github.andra-gs.avenqor` (both changed 2026-10-25, before any data was stored; verified: the database file is created in that folder). In development it runs `npm run dev` and loads `http://localhost:1420`. For a release it runs `npm run build` (`tsc && vite build`) and packages the files from `dist`. One window of 1200x680 (minimum 960x600, centered). `bundle.targets` is `all`.
+- `src-tauri/tauri.conf.json`: product name `Avenqor`, version `1.1.0` on the branch `release-1.1.0` (set 2026-11-04, not yet built; `1.0.0` on `main` was set 2026-11-01 and its installer tested by the developer the same day; one version serves Windows and Android), identifier `io.github.andra-gs.avenqor` (both changed 2026-10-25, before any data was stored; verified: the database file is created in that folder). In development it runs `npm run dev` and loads `http://localhost:1420`. For a release it runs `npm run build` (`tsc && vite build`) and packages the files from `dist`. One window of 1200x680 (minimum 960x600, centered). `bundle.targets` is `all`.
 - `tauri.conf.json` `plugins.sql.preload` opens `sqlite:avenqor.db` at startup (verified by the developer 2026-10-25: the file `avenqor.db` is created in `%APPDATA%\io.github.andra-gs.avenqor`).
-- `src-tauri/capabilities/default.json`: for the `main` window: `core:default`; four window permissions for the custom title bar (`core:window:allow-minimize`, `allow-toggle-maximize`, `allow-close`, `allow-start-dragging`); `sql:default` and `sql:allow-execute`; four file permissions for backups (`dialog:allow-save`, `dialog:allow-open`, `fs:allow-write-text-file`, `fs:allow-read-text-file`); and `notification:default` for reminders.
+- `src-tauri/capabilities/default.json` (every platform) and `desktop.json` (desktop only, `"platforms": ["windows","macOS","linux"]`, split on 2026-11-02 for the Android version, written and not yet tested): for the `main` window, `default.json` has `core:default`; `desktop.json` has the four window permissions for the custom title bar (`core:window:allow-minimize`, `allow-toggle-maximize`, `allow-close`, `allow-start-dragging`); `default.json` also has `sql:default` and `sql:allow-execute`; four file permissions for backups (`dialog:allow-save`, `dialog:allow-open`, `fs:allow-write-text-file`, `fs:allow-read-text-file`); and `notification:default` for reminders.
 - `src-tauri/src/main.rs` calls `project_manager_lib::run()`. `src-tauri/src/lib.rs` registers the four plugins (`sql` with the six migrations, `dialog`, `fs`, `notification`) and no custom commands.
 - `src-tauri/Cargo.toml`: package `project-manager`, library `project_manager_lib`, Rust edition 2024. Dependencies: `tauri` 2, `serde`, `serde_json`, `tauri-plugin-sql` 2 (feature `sqlite`), `tauri-plugin-dialog` 2, `tauri-plugin-fs` 2, `tauri-plugin-notification` 2.
 - `package.json`: dependencies `react` and `react-dom` ^19.1.0, `react-router` ^7.18.4, `@tauri-apps/api` ^2, `@tauri-apps/plugin-sql` ^2.6.0, `@tauri-apps/plugin-dialog` ^2, `@tauri-apps/plugin-fs` ^2, `@tauri-apps/plugin-notification` ^2, `tailwindcss` and `@tailwindcss/vite` ^4.3.3, `@fontsource-variable/dm-sans` ^5.3.0. Dev dependencies: `vite` ^8.0.16, `@vitejs/plugin-react` ^6.0.2, `typescript` ~6.0.3, `@tauri-apps/cli` ^2, and React type packages.
@@ -238,3 +238,5 @@ Steps in order. Each note says what was added and why; "verified" dates are from
 - **Repository**: code that is the only gateway to stored data.
 - **Migration**: a numbered, versioned change to the database structure, applied in order, so existing user data survives upgrades.
 - **Transaction**: a group of database changes that either all succeed or all fail.
+
+- Mobile layout, first part (written 2026-11-03, not yet tested; see MOBILE.md): below 768 px (Tailwind `md`) the sidebar is hidden and `src/components/layout/BottomNav.tsx` shows the main navigation; its fifth button opens `src/pages/MenuPage.tsx` (route `/menu`, entry `MENU_NAV` in `src/app/navigation.ts`). The top bar uses two rows, and several fixed grids became one or two columns. From 768 px up nothing changes. `src/lib/platform.ts` tells which device runs the app (`IS_ANDROID`, `HAS_DESKTOP_WINDOW`, `HAS_KEYBOARD_SHORTCUTS`); it decides what exists, while width decides how wide the layout is.

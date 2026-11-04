@@ -6,6 +6,7 @@ import { CalendarPage } from "./pages/CalendarPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { DocumentsPage } from "./pages/DocumentsPage";
 import { HelpPage } from "./pages/HelpPage";
+import { MenuPage } from "./pages/MenuPage";
 import { MyTasksPage } from "./pages/MyTasksPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProjectPage } from "./pages/ProjectPage";
@@ -33,6 +34,7 @@ function App() {
           <Route path="tasks/:taskId" element={<TaskPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="help" element={<HelpPage />} />
+          <Route path="menu" element={<MenuPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

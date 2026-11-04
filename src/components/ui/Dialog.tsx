@@ -28,7 +28,7 @@ export function Dialog({ open, title, onClose, busy, children }: DialogProps) {
         event.preventDefault();
         if (!busy) onClose();
       }}
-      className="m-auto w-full max-w-md rounded-card border border-border bg-surface p-6 text-ink backdrop:bg-ink/40"
+      className="m-auto max-h-[calc(100dvh-1.5rem)] w-[calc(100%-1.5rem)] max-w-md overflow-y-auto rounded-card border border-border bg-surface p-4 text-ink backdrop:bg-ink/40 md:w-full md:p-6"
     >
       <h2 className="text-heading font-bold">{title}</h2>
       {children}

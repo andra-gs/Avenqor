@@ -14,7 +14,7 @@ Do not build everything at once. Work incrementally, validate each stage, and ma
 
 Project name: Project Manager Desktop
 
-Repository and folder name: project-manager-desktop
+Repository name: Avenqor (one repository for the desktop and the mobile app; agreed by the developer on 2026-11-01, the GitHub repository was previously named project-manager). The local folder name may differ.
 
 Product name: Avenqor (Agreed by the developer on 2026-10-25; previously "Project Collaboration App". On 2026-11-01 the developer reported that no registration of the name was found in Indonesia or internationally; this was not checked by Claude and is not legal advice). Brand notes: docs/BRAND.md.
 
@@ -491,7 +491,7 @@ Build a useful local-first project management application first. Keep the archit
 
 ## 18. DOCUMENTATION SYSTEM
 
-The project keeps seven documentation files. They are part of the codebase and must stay accurate.
+The project keeps eight documentation files. They are part of the codebase and must stay accurate.
 
 | File | Purpose |
 |---|---|
@@ -501,6 +501,7 @@ The project keeps seven documentation files. They are part of the codebase and m
 | `docs/ARCHITECTURE.md` | Actual application architecture, module responsibilities, data flow, and future online integration strategy. |
 | `docs/DATABASE_SCHEMA.md` | SQLite tables, columns, relationships, constraints, and migrations. |
 | `docs/DEVELOPMENT_STATUS.md` | Completed work, current state, known issues, test results, and next steps. |
+| `docs/MOBILE.md` | Record of the Android version: decisions, setup, plan, open questions, and test results. Desktop documents stay the record of the Windows app. |
 | `docs/BRAND.md` | Brand identity notes (name, meaning, personality, colors, logo direction). Reference only; not an implementation record. |
 
 Rules:

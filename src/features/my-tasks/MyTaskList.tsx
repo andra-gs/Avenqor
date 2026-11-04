@@ -33,8 +33,9 @@ export function MyTaskList({ tasks, emptyMessage }: MyTaskListProps) {
                 <ListRow
                   title={task.title}
                   subtitle={task.projectName}
+                  stackOnPhone
                   trailing={
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       {due && <Badge tone={due.tone}>{due.label}</Badge>}
                       <PriorityBadge priority={task.priority} />
                       <StatusBadge status={task.status} />

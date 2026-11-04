@@ -74,7 +74,7 @@ export function ProjectPage() {
             <Button variant="secondary" onClick={() => navigate(boardPath(project.id))}>
               Open board
             </Button>
-            <Button variant="secondary" onClick={() => setEditProjectOpen(true)}>
+            <Button variant="secondary" icon="pencil" iconOnlyOnPhone onClick={() => setEditProjectOpen(true)}>
               Edit project
             </Button>
           </div>
