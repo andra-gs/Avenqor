@@ -224,7 +224,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 
 ```powershell
 git clone https://github.com/andra-gs/Avenqor.git
-cd project-manager
+cd Avenqor
 npm install
 npm run tauri dev
 ```
