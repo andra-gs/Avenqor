@@ -10,6 +10,7 @@ import { PlaceholderNotice } from "../../components/ui/PlaceholderNotice";
 import { useDocumentActions, useDocumentDetail } from "../../hooks/useDocuments";
 import { formatDateTime } from "../../lib/dateFormat";
 import { describeError } from "../../lib/errors";
+import { THIS_DEVICE } from "../../lib/platform";
 import { DocumentFormDialog } from "./DocumentFormDialog";
 import { KindBadge } from "./KindBadge";
 
@@ -87,7 +88,7 @@ export function DocumentView({ documentId }: { documentId: string }) {
         <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
           <Badge uppercase>Local document</Badge>
           <p className="text-caption text-ink-muted">
-            Stored on this computer only. Created {formatDateTime(document.createdAt)}.
+            Stored on {THIS_DEVICE} only. Created {formatDateTime(document.createdAt)}.
           </p>
         </div>
       </div>

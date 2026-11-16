@@ -5,6 +5,11 @@
 // need their own check when that work begins.
 export const IS_ANDROID = typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent);
 
+// Words for the device in texts shown to the person. The app is the same; only these words differ.
+export const THIS_DEVICE = IS_ANDROID ? "this phone" : "this computer";
+export const OTHER_DEVICES = IS_ANDROID ? "other devices" : "other computers";
+export const OS_NAME = IS_ANDROID ? "Android" : "Windows";
+
 // Desktop-only parts (window title bar and window buttons) are shown when this is true.
 export const HAS_DESKTOP_WINDOW = !IS_ANDROID;
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { describeError } from "../lib/errors";
 import { ensureNotificationPermission } from "../lib/notifications";
+import { IS_ANDROID, OS_NAME } from "../lib/platform";
 import { isValidReminderTime, readReminderSettings, writeReminderSettings } from "../lib/reminderSettings";
 import { sendTestReminder } from "../services/reminderService";
 
@@ -24,7 +25,7 @@ export function useReminderSettings() {
       if (await ensureNotificationPermission()) {
         save({ ...settings, enabled });
       } else {
-        setMessage({ text: "Windows did not allow notifications for Avenqor. Allow them in Windows Settings, then try again.", isError: true });
+        setMessage({ text: `${OS_NAME} did not allow notifications for Avenqor. Allow them in ${IS_ANDROID ? "the phone settings (Apps, Avenqor, Notifications)" : "Windows Settings"}, then try again.`, isError: true });
       }
     } catch (failure) {
       setMessage({ text: describeError(failure), isError: true });
@@ -43,8 +44,8 @@ export function useReminderSettings() {
       const shown = await sendTestReminder();
       setMessage(
         shown
-          ? { text: "Test notification sent. If you see nothing, check Windows Focus Assist or Do not disturb.", isError: false }
-          : { text: "Windows did not allow notifications for Avenqor.", isError: true },
+          ? { text: `Test notification sent. If you see nothing, check ${IS_ANDROID ? "Do not disturb and the notification settings for Avenqor" : "Windows Focus Assist or Do not disturb"}.`, isError: false }
+          : { text: `${OS_NAME} did not allow notifications for Avenqor.`, isError: true },
       );
     } catch (failure) {
       setMessage({ text: describeError(failure), isError: true });
