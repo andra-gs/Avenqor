@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive launcher icon (Android 8.0 and newer): the phone cuts the 108dp picture to its own shape
+     (circle, rounded square, and so on). The indigo "A" stays inside the safe middle area.
+     Older phones use the ic_launcher.png files instead. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/white" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>
