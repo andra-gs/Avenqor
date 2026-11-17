@@ -2,6 +2,7 @@ import { Card } from "../components/ui/Card";
 import { ListRow } from "../components/ui/ListRow";
 import { SectionHeading } from "../components/ui/SectionHeading";
 import { APP_NAME } from "../lib/appInfo";
+import { THIS_DEVICE } from "../lib/platform";
 
 export function HelpPage() {
   return (
@@ -13,7 +14,7 @@ export function HelpPage() {
             <ListRow title={APP_NAME} subtitle="Local-first project manager" />
             <ListRow
               title="What this app is"
-              subtitle="A local-first project manager for Windows. It is built to work without internet or an account."
+              subtitle="A local-first project manager for Windows and Android. It is built to work without internet or an account."
             />
           </div>
         </Card>
@@ -23,8 +24,8 @@ export function HelpPage() {
         <SectionHeading>Current state</SectionHeading>
         <Card>
           <div className="flex flex-col gap-3">
-            <ListRow title="Your data" subtitle="Workspaces, projects, and tasks are saved in a database on this computer. Important changes (creating, editing, moving, and deleting) are also written to a local history, shown as Activity." />
-            <ListRow title="Not available yet" subtitle="Kanban board, calendar, documents, task details, backup, and online features." />
+            <ListRow title="Your data" subtitle={`Workspaces, projects, and tasks are saved in a database on ${THIS_DEVICE}. Important changes (creating, editing, moving, and deleting) are also written to a local history, shown as Activity.`} />
+            <ListRow title="Not available yet" subtitle="Subtasks, templates, GitHub integration, and online features such as sync between devices." />
           </div>
         </Card>
       </section>

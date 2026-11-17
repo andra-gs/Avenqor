@@ -107,7 +107,7 @@ export function TaskPage() {
               {task.description ? (
                 <p className="text-body whitespace-pre-line [overflow-wrap:anywhere]">{task.description}</p>
               ) : (
-                <EmptyMessage>No description yet. Use “Edit task” to add one.</EmptyMessage>
+                <EmptyMessage>No description yet. Edit the task to add one.</EmptyMessage>
               )}
             </Card>
           </section>

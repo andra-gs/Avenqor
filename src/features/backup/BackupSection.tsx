@@ -8,6 +8,7 @@ import { formatDateTime } from "../../lib/dateFormat";
 import { ValidationError } from "../../lib/errors";
 import { readLastBackupAt } from "../../lib/lastBackup";
 import { pluralize } from "../../lib/text";
+import { THIS_DEVICE } from "../../lib/platform";
 import type { RestorePreview } from "../../services/backupService";
 import type { BackupSummary } from "../../types/backup";
 import { RestoreDialog } from "./RestoreDialog";
@@ -91,7 +92,7 @@ export function BackupSection() {
               </Button>
             </div>
             <p className="text-caption text-ink-muted">
-              {lastBackupAt ? `Last backup from this computer: ${formatDateTime(lastBackupAt)}.` : "No backup has been saved from this computer yet."}
+              {lastBackupAt ? `Last backup from ${THIS_DEVICE}: ${formatDateTime(lastBackupAt)}.` : `No backup has been saved from ${THIS_DEVICE} yet.`}
             </p>
             {exportMessage && (
               <p className={exportMessage.failed ? "text-caption text-danger" : "text-caption text-success-strong"} role="status">

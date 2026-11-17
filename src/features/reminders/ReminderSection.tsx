@@ -4,6 +4,7 @@ import { Checkbox } from "../../components/ui/Checkbox";
 import { SectionHeading } from "../../components/ui/SectionHeading";
 import { TextField } from "../../components/ui/TextField";
 import { useReminderSettings } from "../../hooks/useReminderSettings";
+import { IS_ANDROID, THIS_DEVICE } from "../../lib/platform";
 
 // Settings for the deadline reminder: on or off, the time of day, and a test button.
 export function ReminderSection() {
@@ -31,8 +32,15 @@ export function ReminderSection() {
           <ul className="list-disc space-y-1 pl-5 text-caption text-ink-muted">
             <li>You get one notification a day, at that time or when you open Avenqor after it. It counts your own tasks that are not done.</li>
             <li>Reminders appear only while Avenqor is open. Nothing runs in the background after you close it.</li>
-            <li>Windows shows notifications for installed apps. When you run Avenqor from the development tool, they carry the name of PowerShell.</li>
-            <li>Windows can silence notifications (Focus Assist or Do not disturb). The setting is kept on this computer only and is not part of a backup.</li>
+            {IS_ANDROID ? (
+              <li>Android shows notifications only when they are allowed for Avenqor in the phone settings (Apps, Avenqor, Notifications).</li>
+            ) : (
+              <li>Windows shows notifications for installed apps. When you run Avenqor from the development tool, they carry the name of PowerShell.</li>
+            )}
+            <li>
+              {IS_ANDROID ? "Do not disturb or battery saver can silence notifications." : "Windows can silence notifications (Focus Assist or Do not disturb)."} The setting is kept
+              on {THIS_DEVICE} only and is not part of a backup.
+            </li>
           </ul>
         </div>
       </Card>

@@ -6,6 +6,7 @@ import { ReminderSection } from "../features/reminders/ReminderSection";
 import { ProfileEditor } from "../features/profile/ProfileEditor";
 import { WorkspaceManager } from "../features/workspaces/WorkspaceManager";
 import { useDatabaseStatus, type DatabaseStatusState } from "../hooks/useDatabaseStatus";
+import { OTHER_DEVICES, THIS_DEVICE } from "../lib/platform";
 import { pluralize } from "../lib/text";
 
 function describeDatabase(state: DatabaseStatusState): string {
@@ -46,7 +47,7 @@ export function SettingsPage() {
           <div className="flex flex-col gap-3">
             <ListRow
               title="Storage"
-              subtitle="Your data is kept in a database file on this computer. It is not shared with other computers."
+              subtitle={`Your data is kept in a database file on ${THIS_DEVICE}. It is not shared with ${OTHER_DEVICES}.`}
             />
             <ListRow title="Database" subtitle={describeDatabase(database)} />
           </div>

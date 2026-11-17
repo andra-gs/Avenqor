@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The notification plugin finds the small status-bar icon by its NAME at run time. The release build removes
+     resources that nothing references in code, so this file tells it to keep the icon. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_stat_avenqor" />
