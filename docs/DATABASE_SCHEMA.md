@@ -97,4 +97,26 @@ Migration files live in `src-tauri/migrations/` and are registered in `src-tauri
 
 Decided on 2026-10-25: ID format (UUID text), date format, local profile (a row in `profiles`), deletion behavior (above), database file location (app config folder, see above).
 
-Planned (Future): documents as files and folders, with imported files stored in the database (see [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)). It will need a new migration that moves today's documents; it is not designed yet.
+Planned (Future): documents as files and folders (see [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)); the design is Proposed in the section "Planned: documents as files and folders" below.
+
+## Planned: documents as files and folders (Proposed 2026-11-17, not approved, not built)
+
+This is the design for migration 7. **Nothing here exists in a migration yet.** It was written from the code as it is today (tables `documents`, `projects`, `activity_log`, the backup table list) and from the source of `tauri-plugin-sql` 2.6.0.
+
+**Finding that changes an earlier decision.** The earlier agreement said imported files are stored as BLOB. In `tauri-plugin-sql` 2.6.0 (read on GitHub, 2026-11-17): a BLOB column is read as a JSON array with one number per byte (a 10 MB file becomes about 10 million numbers), and a value to write that is not null, text, or a number is bound as JSON, so a real BLOB cannot be written through the plugin. A BLOB therefore does not work for 10 MB files. **Proposed instead:** store the file's bytes as **base64 text** (about one third bigger, so a 10 MB file takes about 13.4 MB) in a separate table, which also fits the JSON backup directly. The reason the developer gave for the database (one data file, simple backups) stays true. The 10 MB limit applies to the original file.
+
+| Table (Proposed) | Purpose | Columns and rules |
+|---|---|---|
+| `folders` | Folders of one workspace | `id` (UUID), `workspace_id` (CASCADE), `parent_id` (NULL = top level, CASCADE), `name` (not empty after trimming, no `/`), `project_id` (NULL or the project this folder follows; `ON DELETE SET NULL`, so deleting a project keeps the folder), `created_at`, `updated_at` |
+| `files` | Files and their text | `id`, `workspace_id` (CASCADE), `folder_id` (NULL = top level, CASCADE), `name` (without extension), `format` (lower-case extension such as `md`, `txt`, `html`, `pdf`, `png`), `kind` (NULL or one of the five old types, used as a tag), `content` (text; empty for PDF and images), `size_bytes` (limit 10 MB checked in the code and by `CHECK`), `created_at`, `updated_at` |
+| `file_data` | Bytes of PDF and image files only | `file_id` (primary key, CASCADE), `data_base64`. Separate so that lists, search, and text editing never load it |
+
+Rules: a name is unique, ignoring capital letters, inside one folder (or the top level of a workspace) for folders, and for files by name plus format; only one folder may follow a given project. A child has the same `workspace_id` as its parent; this is kept by the code inside a transaction (moving a folder to another workspace updates every folder and file below it) and tested, because SQLite cannot check it across rows by itself. Text files (`md`, `txt`, `html`, and any other file that is valid UTF-8 without NUL bytes) keep their text in `files.content`. Preview-only formats: PDF and common images. Anything else is refused with a message. `.html` is shown as code, not rendered.
+
+**Migration 7 (Proposed steps):** create the three tables; create one folder for every existing project, named after it (project names are not unique today, so a repeated name inside a workspace gets a short suffix); turn every row of `documents` into a `.txt` file in its project's folder, with the old type as `kind`, a `/` in the title replaced and repeated titles made unique by a short suffix of the id (so the unique indexes cannot make the migration fail); then drop `documents`. It will be tested on a copy of realistic data (repeated names, odd titles, empty bodies) in an in-memory SQLite database before it is given to the developer, and the developer is asked to export a backup first.
+
+**`activity_log`:** its `CHECK` lists the allowed actions, and SQLite cannot change a `CHECK` without rebuilding the table. Proposed: file events reuse `document_created`, `document_updated`, and `document_deleted`, and folder events are not logged, so the table stays as it is.
+
+**Backup:** the table list in `src/types/backup.ts` is the backup content. Proposed: format version 2 replaces `documents` with `folders`, `files`, and `file_data`; **importing a version 1 backup keeps working** through a conversion that follows the same rules as migration 7 (to be written once and tested against the same data). Known cost: a backup with many large files is large and is built in memory, which may be heavy on a phone; the backup screen will show the size.
+
+**Open points:** how fast reading and writing a 13 MB text value is through the plugin on the phone (to be measured with a real 10 MB file when the import step is built, not guessed); the rule when renaming a project would make its folder name clash with a sibling (Proposed: add a short suffix); which formats the "New file" button offers (Proposed: `md`, `txt`, `html`).
